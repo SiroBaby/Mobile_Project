@@ -1,37 +1,33 @@
 import { Tabs } from 'expo-router';
 import React from 'react';
+import { Image, Text, View } from 'react-native';
+import tw from 'twrnc';
 
-import { TabBarIcon } from '@/components/navigation/TabBarIcon';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
+const homeicon = require("../../assets/images/icon/8726049_home_alt_icon.svg");
 
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
 
-  return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
-      }}>
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Home',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="explore"
-        options={{
-          title: 'Explore',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
-          ),
-        }}
-      />
-    </Tabs>
-  );
-}
+const TabsLayout = () => {
+    return (
+        <Tabs>
+            <Tabs.Screen name="home"
+                options={{
+                    title: 'home',
+                    headerShown: false,
+                    tabBarIcon: ({ color, focused }) => (
+                        <View style={tw`items-center`}>
+                            <Image
+                                source={require('@/assets/images/icon/8726049_home_alt_icon.svg')}
+                                style={tw`w-5 h-5 ${focused ? 'tint-primary' : 'tint-secondary'}`}
+                            />
+                            <Text style={tw`${focused ? 'text-primary' : 'text-secondary'} text-xs`}>
+                                home
+                            </Text>
+                        </View>
+                    ),
+                }}
+            />
+        </Tabs>
+    );
+};
+
+export default TabsLayout;
