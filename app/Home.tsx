@@ -4,14 +4,14 @@ import tw from 'twrnc';
 
 const Home = () => {
   return (
-    <View style={tw`flex-1 mt-6`}>
-      <View style={tw`bg-blue-900 px-2 py-1 flex-row items-center`}>
+    <View style={tw`flex-1`}>
+      <View style={tw`bg-blue-900 px-3 py-1 flex-row items-center`}>
         <Image
           source={require('@/assets/images/logo/vina-qt-high-resolution-logo-white-transparent.png')}
-          style={tw`w-14 h-12`}
+          style={tw`w-14 h-12 mt-8`}
         />
-        <View style={tw`w-0.5 h-12 bg-white ml-3`}></View>
-        <Text style={tw`text-xl text-white ml-3`}>Xin Chào Nhóm 2 !</Text>
+        <View style={tw`w-0.5 h-12 bg-white ml-3 mt-8`}></View>
+        <Text style={tw`text-xl text-white ml-3 mt-8`}>Xin Chào Nhóm 2 !</Text>
       </View>
       <Text style={tw`text-xl font-bold px-3 py-2`}>Chức năng</Text>
       <View style={tw`flex flex-row`}>
