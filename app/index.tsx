@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image, Alert } from 'react-native';
-import { Redirect, router } from 'expo-router';
+import { Link, Redirect, router } from 'expo-router';
 
 
 const Login = () => {
@@ -65,7 +65,7 @@ const Login = () => {
             <Text style={styles.infoText}>Quản trị viên chưa có tài khoản</Text>
 
             <TouchableOpacity style={styles.registerButton} onPress={() => { }}>
-                <Text style={[styles.buttonText, { color: '#2E328C' }]}>Đăng kí</Text>
+                <Link href={'/Sign-up'}><Text style={[styles.buttonText, { color: '#2E328C' }]}>Đăng kí</Text></Link>
             </TouchableOpacity>
         </View>
     );
