@@ -9,9 +9,9 @@ const homeicon = require("../../assets/images/icon/8726049_home_alt_icon.svg");
 const TabsLayout = () => {
     return (
         <Tabs>
-            <Tabs.Screen name="home"
+            <Tabs.Screen name="Home"
                 options={{
-                    title: 'home',
+                    title: 'Home',
                     headerShown: false,
                     tabBarIcon: ({ color, focused }) => (
                         <View style={tw`items-center`}>
@@ -20,7 +20,7 @@ const TabsLayout = () => {
                                 style={tw`w-5 h-5 ${focused ? 'tint-primary' : 'tint-secondary'}`}
                             />
                             <Text style={tw`${focused ? 'text-primary' : 'text-secondary'} text-xs`}>
-                                home
+                                Home
                             </Text>
                         </View>
                     ),
