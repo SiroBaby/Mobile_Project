@@ -4,14 +4,14 @@ import tw from 'twrnc';
 
 const Home = () => {
   return (
-    <View style={tw`flex-1`}>
+    <View style={tw`flex-1 bg-white`}>
       <View style={tw`bg-blue-900 px-3 py-1 flex-row items-center`}>
         <Image
           source={require('@/assets/images/logo/vina-qt-high-resolution-logo-white-transparent.png')}
           style={tw`w-14 h-12 mt-8`}
         />
         <View style={tw`w-0.5 h-12 bg-white ml-3 mt-8`}></View>
-        <Text style={tw`text-xl text-white ml-3 mt-8`}>Xin Chào Nhóm 2 !</Text>
+        <Text style={tw`text-xl text-white ml-3 mt-8`}>Xin Chào NHÓM 2!</Text>
       </View>
       <Text style={tw`text-xl font-bold px-3 py-2`}>Chức năng</Text>
       <View style={tw`flex flex-row`}>
@@ -64,10 +64,19 @@ const Home = () => {
           </View>
           <Text style={tw`text-lg mt-2 font-semibold`}>Nhập điểm</Text>
         </TouchableOpacity>
+        <TouchableOpacity style={tw`px-3 items-center`}>
+          <View style={tw`bg-blue-900/5 w-43 h-24 rounded-3xl items-center justify-center`}>
+            <Image
+              source={require('@/assets/images/icon/8725582_chart_line_icon.png')}
+              style={tw`w-14 h-14 `}
+            />
+          </View>
+          <Text style={tw`text-lg mt-2 font-semibold`}>Nộp báo cáo</Text>
+        </TouchableOpacity>
       </View>
       <Image
         source={require('@/assets/images/logo/vina-qt-favicon-color.png')}
-        style={tw`absolute w-32 h-32 right-0 bottom-0 opacity-10`}
+        style={tw`absolute w-36 h-36 right-0 bottom-0 opacity-10`}
       />
     </View>
     
