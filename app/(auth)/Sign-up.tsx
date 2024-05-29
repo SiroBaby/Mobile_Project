@@ -105,7 +105,7 @@ const SignupScreen = () => {
 
       
       <TouchableOpacity style={tw`h-10 bg-blue-100 py-2 px-5 rounded-xl items-center justify-center mb-8 w-72`} onPress={() => {}}>
-        <Link href={'/index'}><Text style={tw`text-blue-900 font-bold pt-0.5`}>ĐĂNG NHẬP</Text></Link>
+        <Link href={''}><Text style={tw`text-blue-900 font-bold pt-0.5`}>ĐĂNG NHẬP</Text></Link>
       </TouchableOpacity>
     </View>
   );
