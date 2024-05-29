@@ -3,7 +3,12 @@ import React from 'react';
 import { Image, Text, View } from 'react-native';
 import tw from 'twrnc';
 
-const HomeIcon = ({ color, focused }) => {
+interface IconProps {
+    color: string; // Assuming color is a string, adjust type if necessary
+    focused: boolean; // Assuming focused is a boolean, adjust type if necessary
+}
+
+const HomeIcon: React.FC<IconProps> = ({ color, focused }) => {
     return (
         <View style={tw`items-center ${focused ? 'bg-blue-900/90' : 'bg-transparent'} px-4 py-1 rounded-xl`}>
             <Image
@@ -25,7 +30,7 @@ const HomeIcon = ({ color, focused }) => {
     );
 };
 
-const UserIcon = ({ color, focused }) => {
+const UserIcon: React.FC<IconProps> = ({ color, focused }) => {
     return (
         <View style={tw`items-center ${focused ? 'bg-blue-900/90' : 'bg-transparent'} px-4 py-1 rounded-xl`}>
             <Image
