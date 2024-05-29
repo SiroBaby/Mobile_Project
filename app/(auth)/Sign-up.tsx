@@ -1,7 +1,7 @@
-import { Link } from 'expo-router';
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Image, Alert } from 'react-native';
 import tw from 'twrnc';
+import { Link, router } from 'expo-router';
 
 const SignupScreen = () => {
   const [fullName, setFullName] = useState('');
@@ -46,10 +46,10 @@ const SignupScreen = () => {
   };
 
   return (
-    <View style={tw`flex-1 p-4 bg-white items-center`}>
+    <View style={tw`flex-1 p-4 bg-white items-center justify-center`}>
       <Image
         source={require('@/assets/images/signin.jpg')}
-        style={tw`w-80 h-56  mt-14`}
+        style={tw`w-80 h-56`}
       />
       <Text style={tw`text-2xl font-bold mb-3 text-blue-900`}>ĐĂNG KÍ</Text>
 
@@ -103,8 +103,9 @@ const SignupScreen = () => {
 
       <Text style={tw`text-center mb-4 text-blue-900`}> --- Quản trị viên đã có tài khoản --- </Text>
 
-      <TouchableOpacity style={tw`h-10 bg-blue-100 py-2 px-5 rounded-xl items-center mb-8 w-72`} onPress={() => {}}>
-        <Link href={''}><Text style={tw`text-blue-900 font-bold pt-0.5`}>Đăng nhập</Text></Link>
+      
+      <TouchableOpacity style={tw`h-10 bg-blue-100 py-2 px-5 rounded-xl items-center justify-center mb-8 w-72`} onPress={() => {}}>
+        <Link href={''}><Text style={tw`text-blue-900 font-bold pt-0.5`}>ĐĂNG NHẬP</Text></Link>
       </TouchableOpacity>
     </View>
   );

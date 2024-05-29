@@ -5,14 +5,15 @@ import tw from 'twrnc';
 const Home = () => {
   return (
     <View style={tw`flex-1 bg-white`}>
-      <View style={tw`bg-blue-900 px-3 py-1 flex-row items-center`}>
+      <View style={tw`bg-white px-3 py-1 flex-row items-center`}>
         <Image
-          source={require('@/assets/images/logo/vina-qt-high-resolution-logo-white-transparent.png')}
+          source={require('@/assets/images/logo/vina-qt-high-resolution-logo-black-transparent.png')}
           style={tw`w-14 h-12 mt-8`}
         />
-        <View style={tw`w-0.5 h-12 bg-white ml-3 mt-8`}></View>
-        <Text style={tw`text-xl text-white ml-3 mt-8`}>Xin Chào NHÓM 2!</Text>
+        <View style={tw`w-0.5 h-12 bg-black ml-3 mt-8`}></View>
+        <Text style={tw`text-xl ml-3 mt-8`}>Xin Chào NHÓM 2!</Text>
       </View>
+      <View style={tw`w-full h-0.2 bg-black/20`}></View>
       <Text style={tw`text-xl font-bold px-3 py-2`}>Chức năng</Text>
       <View style={tw`flex flex-row`}>
         <TouchableOpacity style={tw`px-3 items-center`}>
