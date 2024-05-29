@@ -1,3 +1,4 @@
+import { Link } from 'expo-router';
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Image, Alert } from 'react-native';
 import tw from 'twrnc';
@@ -16,7 +17,7 @@ const SignupScreen = () => {
       return;
     }
 
-    fetch('http://192.168.0.53:3000/signup', {
+    fetch('http://10.40.2.249:3000/signup', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -103,7 +104,7 @@ const SignupScreen = () => {
       <Text style={tw`text-center mb-4 text-blue-900`}> --- Quản trị viên đã có tài khoản --- </Text>
 
       <TouchableOpacity style={tw`h-10 bg-blue-100 py-2 px-5 rounded-xl items-center mb-8 w-72`} onPress={() => {}}>
-        <Text style={tw`text-blue-900 font-bold pt-0.5`}>Đăng nhập</Text>
+        <Link href={''}><Text style={tw`text-blue-900 font-bold pt-0.5`}>Đăng nhập</Text></Link>
       </TouchableOpacity>
     </View>
   );
