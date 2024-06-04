@@ -92,24 +92,21 @@ const TabNavigator = () => {
             <Tabs.Screen
                 name="list"
                 options={{
-                    title: 'List',
-                    headerShown: false,
+                    title: 'Danh Sách',
                     tabBarIcon: ({ color, focused }) => <ListIcon color={color} focused={focused} />,
                 }}
             />
             <Tabs.Screen
                 name="addnew"
                 options={{
-                    title: 'Add New',
-                    headerShown: false,
+                    title: 'Thêm mới',
                     tabBarIcon: ({ color, focused }) => <AddIcon color={color} focused={focused} />,
                 }}
             />
             <Tabs.Screen
                 name="attendance"
                 options={{
-                    title: 'Attendance',
-                    headerShown: false,
+                    title: 'Điểm danh',
                     tabBarIcon: ({ color, focused }) => <AttendanceIcon color={color} focused={focused} />,
                 }}
             />
