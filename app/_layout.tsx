@@ -1,16 +1,16 @@
+import { Stack } from 'expo-router';
 import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
-import Home from './Home'
 // import Login from './Login';
 
-const Stack = createStackNavigator();
 
 const RootLayout = () => {
   return (
-    <Stack.Navigator initialRouteName="Home">
+    <Stack>
       {/* <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} /> */}
-      <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
-    </Stack.Navigator>
+      <Stack.Screen name="index" options={{ headerShown: false }} />
+      <Stack.Screen name="(tab)" options={{ headerShown: false }} />
+      <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+    </Stack>
   );
 };
 

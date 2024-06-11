@@ -1,14 +1,14 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-const List = () => {
+const inputscore = () => {
   return (
     <View>
-      <Text>List</Text>
+      <Text>inputscore</Text>
     </View>
   )
 }
 
-export default List
+export default inputscore
 
 const styles = StyleSheet.create({})

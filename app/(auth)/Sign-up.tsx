@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Image } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Image, Alert } from 'react-native';
 import tw from 'twrnc';
+import { Link, router } from 'expo-router';
 
-const SigninScreen = () => {
+const SignupScreen = () => {
   const [fullName, setFullName] = useState('');
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
@@ -10,15 +11,45 @@ const SigninScreen = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  const handleSignin = () => {
-    // Xử lý logic đăng ký
+  const handleSignup = () => {
+    if (password !== confirmPassword) {
+      // Xử lý khi mật khẩu không khớp
+      return;
+    }
+
+    fetch('http://10.40.2.249:3000/signup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        fullName,
+        username,
+        password,
+        phoneNumber,
+        email,
+      }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+        Alert.alert('Đăng kí tài khoản thất bại!')
+          throw new Error('Signup failed');
+
+        }
+        Alert.alert('Đăng kí tài khoản thành công!')
+        // Xử lý khi đăng ký thành công
+      })
+      .catch((error) => {
+        Alert.alert('Lỗi khi đăng kí tài khoản!')
+        console.error('Error:', error);
+      });
   };
 
   return (
-    <View style={tw`flex-1 p-4 bg-white items-center`}>
+    <View style={tw`flex-1 p-4 bg-white items-center justify-center`}>
       <Image
-        source={require('../assets/images/signin.jpg')}
-        style={tw`w-80 h-56  mt-14`}
+        source={require('@/assets/images/signin.jpg')}
+        style={tw`w-80 h-56`}
       />
       <Text style={tw`text-2xl font-bold mb-3 text-blue-900`}>ĐĂNG KÍ</Text>
 
@@ -66,17 +97,18 @@ const SigninScreen = () => {
         value={confirmPassword}
       />
 
-      <TouchableOpacity style={tw`h-10 bg-blue-900 py-2 px-3 rounded-xl items-center mb-4 w-72`} onPress={handleSignin}>
+      <TouchableOpacity style={tw`h-10 bg-blue-900 py-2 px-3 rounded-xl items-center mb-4 w-72`} onPress={handleSignup}>
         <Text style={tw`text-white font-bold pt-0.5`}>ĐĂNG KÍ</Text>
       </TouchableOpacity>
 
       <Text style={tw`text-center mb-4 text-blue-900`}> --- Quản trị viên đã có tài khoản --- </Text>
 
-      <TouchableOpacity style={tw`h-10 bg-blue-100 py-2 px-5 rounded-xl items-center mb-8 w-72`} onPress={() => {}}>
-        <Text style={tw`text-blue-900 font-bold pt-0.5`}>Đăng nhập</Text>
+      
+      <TouchableOpacity style={tw`h-10 bg-blue-100 py-2 px-5 rounded-xl items-center justify-center mb-8 w-72`} onPress={() => {}}>
+        <Link href={''}><Text style={tw`text-blue-900 font-bold pt-0.5`}>ĐĂNG NHẬP</Text></Link>
       </TouchableOpacity>
     </View>
   );
 };
 
-export default SigninScreen;
+export default SignupScreen;

@@ -1,14 +1,14 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-const Addnew = () => {
+const subrp = () => {
   return (
     <View>
-      <Text>Addnew</Text>
+      <Text>subrp</Text>
     </View>
   )
 }
 
-export default Addnew
+export default subrp
 
 const styles = StyleSheet.create({})
