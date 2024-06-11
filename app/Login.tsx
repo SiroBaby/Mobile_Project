@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { router } from 'expo-router';
 
 
 const Login = () => {
@@ -24,7 +25,7 @@ const Login = () => {
                 if (data.message === 'Login successful') {
                     
                     Alert.alert('Success', 'Login successful');
-                    navigation.navigate('Home');
+                    router.push('/Home');
                     // Xử lý logic khi đăng nhập thành công
                     
                 } else {
