@@ -17,7 +17,7 @@ const SignupScreen = () => {
       return;
     }
 
-    fetch('http://10.40.2.249:3000/signup', {
+    fetch('http://10.50.0.172:3000/signup', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

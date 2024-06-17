@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Image, Alert } from 'react-native';
 import { Link, router } from 'expo-router';
+import React, { useState } from 'react';
+import { Alert, Image, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import tw from 'twrnc';
 
 const Login = () => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, FlatList, Image } from 'react-native';
+import { Text, View, FlatList, Image, TextInput, TouchableOpacity } from 'react-native';
 import tw from 'twrnc';
 
 const students = [
@@ -28,6 +28,19 @@ const StudentItem = ({ name, classname, studentId }) => (
 const List = () => {
   return (
     <View style={tw`flex-1 pt-2 px-2`}>
+      <View style={tw`flex-row h-10 mb-3 rounded-xl`}>
+        <TextInput
+          style={tw`h-10 border border-gray-300 px-3 mb-7 rounded-l-xl w-78 bg-white shadow`}
+          placeholder="Tìm kiếm"
+        />
+        <TouchableOpacity style={tw`bg-blue-900 p-2 items-center rounded-r-xl h-10 w-16 shadow`}>
+          <Image
+            source={require('../../assets/images/icon/8726215_search_alt_icon.png')}
+            style={tw`w-6 h-6`}
+          />
+        </TouchableOpacity>
+      </View>
+
       <FlatList
         data={students}
         keyExtractor={(item) => item.id}

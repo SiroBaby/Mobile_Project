@@ -25,7 +25,7 @@ const Home = () => {
 
   //Nộp báo cáo
   const Subrp = () => {
-    navigation.navigate('subrp');
+    navigation.navigate('profile');
   };
 
   return (
