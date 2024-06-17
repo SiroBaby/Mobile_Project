@@ -26,9 +26,16 @@ db.serialize(() => {
   db.run(`CREATE TABLE IF NOT EXISTS SinhVien (
     MSSV TEXT PRIMARY KEY,
     Ten TEXT,
+    NgaySinh DATE,
+    GioiTinh Text,
+    CCCD Text,
+    DanToc Text,
+    QueQuan Text,
     Email TEXT,
     SoDienThoai TEXT,
     MaNganh TEXT,
+    Img TEXT,
+    Address TEXT,
     FOREIGN KEY (MaNganh) REFERENCES NganhHoc(MaNganh)
   )`);
 
@@ -36,9 +43,8 @@ db.serialize(() => {
     MaLop TEXT PRIMARY KEY,
     TenLop TEXT,
     SoLuongSV INTEGER,
-    MaMonHoc TEXT,
     ID TEXT,
-    FOREIGN KEY (MaMonHoc) REFERENCES MonHoc(MaMonHoc)
+    FOREIGN KEY (ID) REFERENCES User(ID)
   )`);
 
   db.run(`CREATE TABLE IF NOT EXISTS MonHoc (
@@ -99,6 +105,14 @@ db.serialize(() => {
     MaLop TEXT,
     PRIMARY KEY (MSSV, MaLop),
     FOREIGN KEY (MSSV) REFERENCES SinhVien(MSSV),
+    FOREIGN KEY (MaLop) REFERENCES LopHoc(MaLop)
+  )`);
+
+  db.run(`CREATE TABLE IF NOT EXISTS LopMonHoc (
+    MaLop TEXT,
+    MaMonHoc TEXT,
+    PRIMARY KEY (MaLop, MaMonHoc),
+    FOREIGN KEY (MaMonHoc) REFERENCES MonHoc(MaMonHoc),
     FOREIGN KEY (MaLop) REFERENCES LopHoc(MaLop)
   )`);
 });
