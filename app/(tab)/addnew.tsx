@@ -18,7 +18,7 @@ const AddStudentScreen = () => {
   const [image, setImage] = useState(null);
 
   const handleSave = () => {
-    // Save student data to the database
+    // lưu vào dtb
     console.log('Save student data:', {
       name,
       mssv,
@@ -71,11 +71,11 @@ const AddStudentScreen = () => {
 };
 
   const handleImagePicker = () => {
-    // Handle image upload
+    // Xử lý up ảnh lên
   };
 
   return (
-    <ScrollView contentContainerStyle={tw`flex flex-1 items-center bg-white p-4`} style={tw`bg-white`}>
+    <ScrollView contentContainerStyle={tw`flex items-center bg-white p-4`} keyboardShouldPersistTaps="handled">
       <View style={tw`flex items-center justify-center mb-4`}>
         <Image
           source={require('@/assets/images/hi.png')}
@@ -92,7 +92,7 @@ const AddStudentScreen = () => {
       <TextInput
         style={tw`h-10 border border-gray-300 px-3 mb-2 rounded-xl w-full w-78`}
         placeholder="Họ và tên"
-        placeholderTextColor="#a1a1aa" 
+        placeholderTextColor="#a1a1aa"
         onChangeText={setName}
         value={name}
       />
@@ -120,15 +120,17 @@ const AddStudentScreen = () => {
         value={ngaysinh}
       />
       <View style={tw`flex flex-row justify-between w-full w-78 mb-2`}>
-      <Picker
-          style={tw`h-10 border border-gray-300 px-3 rounded-xl w-38`}
-          selectedValue={gioitinh}
-          onValueChange={(itemValue) => setGioitinh(itemValue)}
-        >
-          <Picker.Item label="Giới tính" value=""/>
-          <Picker.Item label="Nam" value="Nam" />
-          <Picker.Item label="Nữ" value="Nữ" />
-        </Picker>
+        <View style={tw`h-10 border border-gray-300 px-3 pb-2 rounded-xl w-38`}>
+          <Picker
+            style={tw`text-xs text-slate-400 px-3`}
+            selectedValue={gioitinh}
+            onValueChange={(itemValue) => setGioitinh(itemValue)}
+          >
+            <Picker.Item label="Giới tính" value="" />
+            <Picker.Item label="Nam" value="Nam" />
+            <Picker.Item label="Nữ" value="Nữ" />
+          </Picker> 
+        </View>
         <TextInput
           style={tw`h-10 border border-gray-300 px-3 mb-2 rounded-xl w-38`}
           placeholder="Dân tộc"
