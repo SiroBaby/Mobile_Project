@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Image, TouchableOpacity, ScrollView, Alert} from 'react-native';
-import {Picker} from '@react-native-picker/picker';
+import { View, Text, TextInput, Image, TouchableOpacity, ScrollView, Alert } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
 import tw from 'twrnc';
 
 const AddStudentScreen = () => {
@@ -15,10 +15,9 @@ const AddStudentScreen = () => {
   const [email, setEmail] = useState('');
   const [sdt, setSdt] = useState('');
   const [nganhhoc, setNganhhoc] = useState('');
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState<string | null>(null);
 
-  const handleSave = () => {
-    // lưu vào dtb
+  const handleSave = async () => {
     console.log('Save student data:', {
       name,
       mssv,
@@ -31,63 +30,49 @@ const AddStudentScreen = () => {
       email,
       sdt,
       nganhhoc,
-      image,
     });
-  };
 
-  fetch('http://192.168.0.29:3000/signup', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      mssv,
-      name,
-      ngaysinh,
-      gioitinh,
-      cccd,
-      dantoc,
-      quequan,
-      email,
-      sdt,
-      nganhhoc,
-      image,
-      diachi,
-    }),
-  })
-    .then((response) => {
-      if (!response.ok) {
-      Alert.alert('Đăng kí tài khoản thất bại!')
-        throw new Error('Signup failed');
-
-      }
-      Alert.alert('Đăng kí tài khoản thành công!')
-      // Xử lý khi đăng ký thành công
+    fetch('http://10.40.5.32:3000/addnew', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        mssv,
+        name,
+        ngaysinh,
+        gioitinh,
+        cccd,
+        dantoc,
+        quequan,
+        email,
+        sdt,
+        diachi,
+        nganhhoc,
+      }),
     })
-    .catch((error) => {
-      Alert.alert('Lỗi khi đăng kí tài khoản!')
-      console.error('Error:', error);
-    });
-};
-
-  const handleImagePicker = () => {
-    // Xử lý up ảnh lên
+      .then(response => {
+        if (!response.ok) {
+          Alert.alert('Thêm sinh viên thất bại!');
+          throw new Error('Thêm mới sinh viên thất bại');
+        }
+        Alert.alert('Thêm mới sinh viên thành công!');
+      })
+      .catch(error => {
+        Alert.alert('Lỗi khi thêm sinh viên!');
+        console.error('Error:', error);
+      });
   };
 
   return (
     <ScrollView contentContainerStyle={tw`flex items-center bg-white p-4`} keyboardShouldPersistTaps="handled">
       <View style={tw`flex items-center justify-center mb-4`}>
-        <Image
-          source={require('@/assets/images/hi.png')}
-          style={tw`w-40 h-40 mb-2 rounded-full`}
-        />
+        {image ? (
+          <Image source={{ uri: image }} style={tw`w-40 h-40 mb-2 rounded-full`} />
+        ) : (
+          <Image source={require('@/assets/images/hi.png')} style={tw`w-40 h-40 mb-2 rounded-full`} />
+        )}
       </View>
-      <TouchableOpacity
-        style={tw`h-10 bg-blue-900 py-2 px-3 rounded-xl items-center mb-4 w-28`}
-        onPress={handleSave}
-      >
-        <Text style={tw`text-white font-bold pt-0.5`}>Thêm ảnh</Text>
-      </TouchableOpacity>
       <Text style={tw`text-lg font-bold mb-2`}>NHẬP THÔNG TIN</Text>
       <TextInput
         style={tw`h-10 border border-gray-300 px-3 mb-2 rounded-xl w-full w-78`}
@@ -129,14 +114,14 @@ const AddStudentScreen = () => {
             <Picker.Item label="Giới tính" value="" />
             <Picker.Item label="Nam" value="Nam" />
             <Picker.Item label="Nữ" value="Nữ" />
-          </Picker> 
+          </Picker>
         </View>
         <TextInput
-          style={tw`h-10 border border-gray-300 px-3 mb-2 rounded-xl w-38`}
+          style={tw`h-10 border border-gray-300 px-3 rounded-xl w-38`}
           placeholder="Dân tộc"
           placeholderTextColor="#a1a1aa"
           onChangeText={setDantoc}
-          value={diachi}
+          value={dantoc}
         />
       </View>
       <TextInput
@@ -144,7 +129,7 @@ const AddStudentScreen = () => {
         placeholder="Địa chỉ"
         placeholderTextColor="#a1a1aa"
         onChangeText={setDiachi}
-        value={dantoc}
+        value={diachi}
       />
       <TextInput
         style={tw`h-10 border border-gray-300 px-3 mb-2 rounded-xl w-full w-78`}
@@ -169,13 +154,6 @@ const AddStudentScreen = () => {
           value={sdt}
         />
       </View>
-      <TextInput
-        style={tw`h-10 border border-gray-300 px-3 mb-2 rounded-xl w-full w-78`}
-        placeholder="Lớp học"
-        placeholderTextColor="#a1a1aa"
-        onChangeText={setLophoc}
-        value={lophoc}
-      />
       <TextInput
         style={tw`h-10 border border-gray-300 px-3 mb-2 rounded-xl w-full w-78`}
         placeholder="Ngành học"

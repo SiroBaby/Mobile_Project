@@ -1,5 +1,4 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const cors = require('cors');
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
@@ -8,9 +7,10 @@ const app = express();
 const port = 3000;
 
 app.use(cors());
-app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
-// Mở kết nối đến cơ sở dữ liệu SQLite (lưu trữ trong file database.db)
+// Kết nối đến cơ sở dữ liệu SQLite (lưu trữ trong file database.db)
 let db = new sqlite3.Database(path.resolve(__dirname, 'database.db'), (err) => {
   if (err) {
     console.error(err.message);
@@ -118,60 +118,58 @@ db.serialize(() => {
 });
 
 app.post('/login', (req, res) => {
-    const { username, password } = req.body;
-    db.get('SELECT * FROM User WHERE TenDangNhap = ? AND MatKhau = ?', [username, password], (err, row) => {
-      if (err) {
-        res.status(500).json({ error: err.message });
-        return;
-      }
-      if (row) {
-        res.status(200).json({ message: 'Login successful', user: row });
-      } else {
-        res.status(401).json({ message: 'Invalid credentials' });
-      }
-    });
-});
-
-app.post('/addnew', (req, res) => {
   const { username, password } = req.body;
-  db.run('INSERT INTO SinhVien (MSSV, Ten, NgaySinh, GioiTinh, CCCD, DanToc, QueQuan, Email, SoDienThoai, MaNganh, Img, Address) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [], (err, row)=> {
+  db.get('SELECT * FROM User WHERE TenDangNhap = ? AND MatKhau = ?', [username, password], (err, row) => {
     if (err) {
       res.status(500).json({ error: err.message });
       return;
     }
     if (row) {
-      res.status(200).json({ message: 'Thêm sinh viên thành công', user: row });
+      res.status(200).json({ message: 'Login successful', user: row });
     } else {
-      res.status(401).json({ message: 'Có lỗi khi thêm sinh viên, Vui lòng thử lại!' });
+      res.status(401).json({ message: 'Invalid credentials' });
     }
-  })
+  });
 });
 
 app.post('/signup', (req, res) => {
-    const { fullName, username, email, phoneNumber, password } = req.body;
-    // Kiểm tra xem người dùng đã tồn tại trong cơ sở dữ liệu chưa
-    db.get('SELECT * FROM User WHERE TenDangNhap = ?', [username], (err, row) => {
-      if (err) {
-        res.status(500).json({ error: err.message });
-        console.error('Error Signup: '+ err.message);
-        return;
-      }
-      if (row) {
-        res.status(400).json({ message: 'Username already exists' });
-      } else {
-        // Thêm người dùng mới vào cơ sở dữ liệu
-        db.run('INSERT INTO User (HoVaTen, TenDangNhap, MatKhau, SDT, Email) VALUES ( ?, ?, ?, ?, ?)', [fullName, username, password, phoneNumber, email], (err) => {
-          if (err) {
-            res.status(500).json({ error: err.message });
-            console.log('Error Signup: '+ err);
-            return;
-          }
-          res.status(201).json({ message: 'Signup successful' });
-        });
-      }
-    });
+  const { fullName, username, email, phoneNumber, password } = req.body;
+  // Kiểm tra xem người dùng đã tồn tại trong cơ sở dữ liệu chưa
+  db.get('SELECT * FROM User WHERE TenDangNhap = ?', [username], (err, row) => {
+    if (err) {
+      res.status(500).json({ error: err.message });
+      return;
+    }
+    if (row) {
+      res.status(400).json({ message: 'Username already exists' });
+    } else {
+      // Thêm người dùng mới vào cơ sở dữ liệu
+      db.run('INSERT INTO User (HoVaTen, TenDangNhap, MatKhau, SDT, Email) VALUES (?, ?, ?, ?, ?)', [fullName, username, password, phoneNumber, email], (err) => {
+        if (err) {
+          res.status(500).json({ error: err.message });
+          return;
+        }
+        res.status(201).json({ message: 'Signup successful' });
+      });
+    }
+  });
 });
 
+// Route thêm mới sinh viên
+app.post('/addnew', (req, res) => {
+  const { mssv, name, ngaysinh, gioitinh, cccd, dantoc, quequan, email, sdt, nganhhoc, diachi } = req.body;
+
+  const sql = `INSERT INTO SinhVien (MSSV, Ten, NgaySinh, GioiTinh, CCCD, DanToc, QueQuan, Email, SoDienThoai, MaNganh, Address)
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+  db.run(sql, [mssv, name, ngaysinh, gioitinh, cccd, dantoc, quequan, email, sdt, nganhhoc, diachi], function (err) {
+    if (err) {
+      res.status(500).json({ error: 'Thêm mới sinh viên thất bại' });
+      return;
+    }
+    res.status(200).json({ message: 'Thêm mới sinh viên thành công' });
+  });
+});
 
 // Khởi động server
 app.listen(port, () => {
