@@ -132,6 +132,21 @@ app.post('/login', (req, res) => {
     });
 });
 
+app.post('/addnew', (req, res) => {
+  const { username, password } = req.body;
+  db.run('INSERT INTO SinhVien (MSSV, Ten, NgaySinh, GioiTinh, CCCD, DanToc, QueQuan, Email, SoDienThoai, MaNganh, Img, Address) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [], (err, row)=> {
+    if (err) {
+      res.status(500).json({ error: err.message });
+      return;
+    }
+    if (row) {
+      res.status(200).json({ message: 'Thêm sinh viên thành công', user: row });
+    } else {
+      res.status(401).json({ message: 'Có lỗi khi thêm sinh viên, Vui lòng thử lại!' });
+    }
+  })
+});
+
 app.post('/signup', (req, res) => {
     const { fullName, username, email, phoneNumber, password } = req.body;
     // Kiểm tra xem người dùng đã tồn tại trong cơ sở dữ liệu chưa

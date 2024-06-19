@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Image, TouchableOpacity, ScrollView} from 'react-native';
+import { View, Text, TextInput, Image, TouchableOpacity, ScrollView, Alert} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import tw from 'twrnc';
 
@@ -14,9 +14,7 @@ const AddStudentScreen = () => {
   const [quequan, setQuequan] = useState('');
   const [email, setEmail] = useState('');
   const [sdt, setSdt] = useState('');
-  const [lophoc, setLophoc] = useState('');
   const [nganhhoc, setNganhhoc] = useState('');
-  const [school, setSchool] = useState('');
   const [image, setImage] = useState(null);
 
   const handleSave = () => {
@@ -32,12 +30,45 @@ const AddStudentScreen = () => {
       quequan,
       email,
       sdt,
-      lophoc,
       nganhhoc,
-      school,
       image,
     });
   };
+
+  fetch('http://192.168.0.29:3000/signup', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      mssv,
+      name,
+      ngaysinh,
+      gioitinh,
+      cccd,
+      dantoc,
+      quequan,
+      email,
+      sdt,
+      nganhhoc,
+      image,
+      diachi,
+    }),
+  })
+    .then((response) => {
+      if (!response.ok) {
+      Alert.alert('Đăng kí tài khoản thất bại!')
+        throw new Error('Signup failed');
+
+      }
+      Alert.alert('Đăng kí tài khoản thành công!')
+      // Xử lý khi đăng ký thành công
+    })
+    .catch((error) => {
+      Alert.alert('Lỗi khi đăng kí tài khoản!')
+      console.error('Error:', error);
+    });
+};
 
   const handleImagePicker = () => {
     // Handle image upload
