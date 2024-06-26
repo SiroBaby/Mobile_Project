@@ -14,3 +14,12 @@ export interface StudentInfoType {
     major: string;
     school: string;
 }
+
+export type RootStackParamList = {
+    home: undefined;
+    addnew: undefined;
+    list: undefined;
+    attendance: undefined;
+    inputscore: undefined;
+    subrp: undefined;
+  };
