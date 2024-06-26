@@ -45,7 +45,7 @@ const SubjectGradeScreen = () => {
 
     return diemTB.toFixed(2);//làm tròn 2 chữ số thập phaan
   };
-// hiện kết quả sau khi đã nhập xong 4 cột điểm và tính điểm tb
+// hiện kết quả sau khi đã nhập xong 4 cột điểm và tính điểm tb (khi chưa có đủ 4 cột điểm thì nó trống) 
   const determineResult = (student: any) => {
     const { score1, score2, score3, score4 } = student;
     const allScoresFilled = score1 !== '' && score2 !== '' && score3 !== '' && score4 !== '';
@@ -53,15 +53,18 @@ const SubjectGradeScreen = () => {
       const diemTB = calculateAverage(student);
       return parseFloat(diemTB) >= 4 ? 'Đạt' : 'Học lại';
     } else {
-      return '';
+      return ''; // trống khi chưa đủ 4 cột điểm
     }
   };
 
 
+  //cái nhập điểm này khi bấm vào sinh viên á nó sẽ hiện hàng nhập điểm 
+
   //những cái đang thiếu, sai và tui đang làm sửa 
-//bổ sung điều kiện chỉ nhập điểm từ dạng số từ 0 tới 10 sau
-//bổ sung tự động ẩn hàng nhập điểm khi nhấn chọn vào 1 sinh viên khác 
-//chỉnh sửa lại css 
+//1. bổ sung điều kiện chỉ nhập điểm từ dạng số từ 0 tới 10 sau
+//2. bổ sung tự động ẩn hàng nhập điểm khi nhấn chọn vào 1 sinh viên khác 
+//3. chỉnh sửa lại css 
+
 
   const toggleExpand = (mssv: string) => {
     setExpandedStudents(prevState => ({
