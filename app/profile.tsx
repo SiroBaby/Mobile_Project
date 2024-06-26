@@ -22,15 +22,8 @@ function StudentInfo() {
         school: 'Học viện Hàng Không Việt Nam' // default value
     });
 
-    useEffect(() => {
-        // Fetch data from backend API
-        fetch('http://10.50.0.172:3000/profile/2454810049')
-            .then(response => response.json())
-            .then(data => setStudentInfo(data))
-            .catch(error => console.error('Error fetching student info:', error));
-    }, []);
 
-    const handleInputChange = (field : keyof types.StudentInfoType, value: string) => {
+    const handleInputChange = (field: keyof types.StudentInfoType, value: string) => {
         setStudentInfo(prevState => ({
             ...prevState,
             [field]: value
@@ -38,20 +31,8 @@ function StudentInfo() {
     };
 
     const handleSubmit = () => {
-        // Send updated data to backend API
-        fetch('http://10.50.0.172:3000/profile/2454810049', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(studentInfo)
-        })
-            .then(response => response.json())
-            .then(data => {
-                setStudentInfo(data);
-                setModalOpen(false);
-            })
-            .catch(error => console.error('Error updating student info:', error));
+        
+        
     };
 
     return (
@@ -123,98 +104,98 @@ function StudentInfo() {
             </View>
             <Button title='Chỉnh sửa' onPress={() => setModalOpen(true)} />
             <Modal isOpen={modalOpen}>
-                    <View style={tw`w-90 p-4 rounded-xl justify-center `}>
-                        <View style={tw`flex justify-center pt-2 px-4`}>
-                            <View style={tw`flex items-center justify-center`}>
-                                <Image
-                                    source={require('@/assets/images/hi.png')}
-                                    style={tw`w-40 h-40 mb-4 rounded-full`} />
-                            </View>
-                        </View>
-
-                        <View style={tw`bg-blue-900/5 p-4 rounded-lg mb-4 border-dotted border-2 border-indigo-900`}>
-                            <TextInput
-                                style={tw`h-8 border border-gray-300 px-3 mb-2 rounded-xl`}
-                                placeholder="Họ Và Tên"
-                                value={studentInfo.name}
-                                onChangeText={(value) => handleInputChange('name', value)} />
-                            <View style={tw`flex-row justify-between`}>
-                                <TextInput
-                                    style={tw`w-34 h-8 border border-gray-300 px-3 mb-2 rounded-xl`}
-                                    placeholder="Mã số Sinh Viên"
-                                    value={studentInfo.studentId}
-                                    onChangeText={(value) => handleInputChange('studentId', value)} />
-                                <TextInput
-                                    style={tw`w-34 h-8 border border-gray-300 px-3 mb-2 rounded-xl`}
-                                    placeholder="CCCD"
-                                    value={studentInfo.cccd}
-                                    onChangeText={(value) => handleInputChange('cccd', value)} />
-                            </View>
-                            <TextInput
-                                style={tw`h-8 border border-gray-300 px-3 mb-2 rounded-xl`}
-                                placeholder="Ngày sinh"
-                                value={studentInfo.dob}
-                                onChangeText={(value) => handleInputChange('dob', value)} />
-                            <View style={tw`flex-row justify-between`}>
-                                <TextInput
-                                    style={tw`w-34 h-8 border border-gray-300 px-3 mb-2 rounded-xl`}
-                                    placeholder="Giới tính"
-                                    value={studentInfo.gender}
-                                    onChangeText={(value) => handleInputChange('gender', value)} />
-                                <TextInput
-                                    style={tw`w-34 h-8 border border-gray-300 px-3 mb-2 rounded-xl`}
-                                    placeholder="Dân tộc"
-                                    value={studentInfo.ethnicity}
-                                    onChangeText={(value) => handleInputChange('ethnicity', value)} />
-                            </View>
-                            <TextInput
-                                style={tw`h-8 border border-gray-300 px-3 mb-2 rounded-xl`}
-                                placeholder="Địa chỉ"
-                                value={studentInfo.address}
-                                onChangeText={(value) => handleInputChange('address', value)} />
-                            <TextInput
-                                style={tw`h-8 border border-gray-300 px-3 mb-2 rounded-xl`}
-                                placeholder="Quê quán"
-                                value={studentInfo.hometown}
-                                onChangeText={(value) => handleInputChange('hometown', value)} />
-                            <View style={tw`flex-row justify-between`}>
-                                <TextInput
-                                    style={tw`w-34 h-8 border border-gray-300 px-3 mb-2 rounded-xl`}
-                                    placeholder="Email"
-                                    value={studentInfo.email}
-                                    onChangeText={(value) => handleInputChange('email', value)} />
-                                <TextInput
-                                    style={tw`w-34 h-8 border border-gray-300 px-3 mb-2 rounded-xl`}
-                                    placeholder="Số điện thoại"
-                                    value={studentInfo.phone}
-                                    onChangeText={(value) => handleInputChange('phone', value)} />
-                            </View>
-
-                            <TextInput
-                                style={tw`h-8 border border-gray-300 px-3 mb-2 rounded-xl`}
-                                placeholder="Lớp học"
-                                value={studentInfo.class}
-                                onChangeText={(value) => handleInputChange('class', value)} />
-                            <TextInput
-                                style={tw`h-8 border border-gray-300 px-3 mb-2 rounded-xl`}
-                                placeholder="Ngành học"
-                                value={studentInfo.major}
-                                onChangeText={(value) => handleInputChange('major', value)} />
-                            <TextInput
-                                style={tw`h-8 border border-gray-300 px-3 mb-2 rounded-xl`}
-                                placeholder="Trường học"
-                                value={studentInfo.school}
-                                onChangeText={(value) => handleInputChange('school', value)} />
-                        </View>
-                        <View style={tw`items-center`}>
-                            <Pressable onPress={handleSubmit}>
-                                <Text style={tw`text-xl font-bold bg-blue-700 p-2 rounded-xl text-white`}>Submit</Text>
-                            </Pressable>
-                            <Pressable onPress={() => setModalOpen(false)}>
-                                <Text style={tw`text-xl font-bold bg-red-700 p-2 rounded-xl text-white mt-2`}>Close</Text>
-                            </Pressable>
+                <View style={tw`w-90 p-4 rounded-xl justify-center `}>
+                    <View style={tw`flex justify-center pt-2 px-4`}>
+                        <View style={tw`flex items-center justify-center`}>
+                            <Image
+                                source={require('@/assets/images/hi.png')}
+                                style={tw`w-40 h-40 mb-4 rounded-full`} />
                         </View>
                     </View>
+
+                    <View style={tw`bg-blue-900/5 p-4 rounded-lg mb-4 border-dotted border-2 border-indigo-900`}>
+                        <TextInput
+                            style={tw`h-8 border border-gray-300 px-3 mb-2 rounded-xl`}
+                            placeholder="Họ Và Tên"
+                            value={studentInfo.name}
+                            onChangeText={(value) => handleInputChange('name', value)} />
+                        <View style={tw`flex-row justify-between`}>
+                            <TextInput
+                                style={tw`w-34 h-8 border border-gray-300 px-3 mb-2 rounded-xl`}
+                                placeholder="Mã số Sinh Viên"
+                                value={studentInfo.studentId}
+                                onChangeText={(value) => handleInputChange('studentId', value)} />
+                            <TextInput
+                                style={tw`w-34 h-8 border border-gray-300 px-3 mb-2 rounded-xl`}
+                                placeholder="CCCD"
+                                value={studentInfo.cccd}
+                                onChangeText={(value) => handleInputChange('cccd', value)} />
+                        </View>
+                        <TextInput
+                            style={tw`h-8 border border-gray-300 px-3 mb-2 rounded-xl`}
+                            placeholder="Ngày sinh"
+                            value={studentInfo.dob}
+                            onChangeText={(value) => handleInputChange('dob', value)} />
+                        <View style={tw`flex-row justify-between`}>
+                            <TextInput
+                                style={tw`w-34 h-8 border border-gray-300 px-3 mb-2 rounded-xl`}
+                                placeholder="Giới tính"
+                                value={studentInfo.gender}
+                                onChangeText={(value) => handleInputChange('gender', value)} />
+                            <TextInput
+                                style={tw`w-34 h-8 border border-gray-300 px-3 mb-2 rounded-xl`}
+                                placeholder="Dân tộc"
+                                value={studentInfo.ethnicity}
+                                onChangeText={(value) => handleInputChange('ethnicity', value)} />
+                        </View>
+                        <TextInput
+                            style={tw`h-8 border border-gray-300 px-3 mb-2 rounded-xl`}
+                            placeholder="Địa chỉ"
+                            value={studentInfo.address}
+                            onChangeText={(value) => handleInputChange('address', value)} />
+                        <TextInput
+                            style={tw`h-8 border border-gray-300 px-3 mb-2 rounded-xl`}
+                            placeholder="Quê quán"
+                            value={studentInfo.hometown}
+                            onChangeText={(value) => handleInputChange('hometown', value)} />
+                        <View style={tw`flex-row justify-between`}>
+                            <TextInput
+                                style={tw`w-34 h-8 border border-gray-300 px-3 mb-2 rounded-xl`}
+                                placeholder="Email"
+                                value={studentInfo.email}
+                                onChangeText={(value) => handleInputChange('email', value)} />
+                            <TextInput
+                                style={tw`w-34 h-8 border border-gray-300 px-3 mb-2 rounded-xl`}
+                                placeholder="Số điện thoại"
+                                value={studentInfo.phone}
+                                onChangeText={(value) => handleInputChange('phone', value)} />
+                        </View>
+
+                        <TextInput
+                            style={tw`h-8 border border-gray-300 px-3 mb-2 rounded-xl`}
+                            placeholder="Lớp học"
+                            value={studentInfo.class}
+                            onChangeText={(value) => handleInputChange('class', value)} />
+                        <TextInput
+                            style={tw`h-8 border border-gray-300 px-3 mb-2 rounded-xl`}
+                            placeholder="Ngành học"
+                            value={studentInfo.major}
+                            onChangeText={(value) => handleInputChange('major', value)} />
+                        <TextInput
+                            style={tw`h-8 border border-gray-300 px-3 mb-2 rounded-xl`}
+                            placeholder="Trường học"
+                            value={studentInfo.school}
+                            onChangeText={(value) => handleInputChange('school', value)} />
+                    </View>
+                    <View style={tw`flex-row justify-around`}>
+                        <Pressable onPress={handleSubmit}>
+                            <Text style={tw`text-xl font-bold bg-blue-700 p-2 rounded-xl text-white w-30 text-center`}>Lưu</Text>
+                        </Pressable>
+                        <Pressable onPress={() => setModalOpen(false)}>
+                            <Text style={tw`text-xl font-bold bg-red-700 p-2 rounded-xl text-white w-30 text-center`}>Đóng</Text>
+                        </Pressable>
+                    </View>
+                </View>
             </Modal>
         </View>
     );
