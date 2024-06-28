@@ -17,7 +17,7 @@ const SignupScreen = () => {
       return;
     }
 
-    fetch('http://192.168.0.29:3000/signup', {
+    fetch('http://192.168.1.7:3000/signup', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -37,6 +37,7 @@ const SignupScreen = () => {
 
         }
         Alert.alert('Đăng kí tài khoản thành công!')
+        router.push('');
         // Xử lý khi đăng ký thành công
       })
       .catch((error) => {

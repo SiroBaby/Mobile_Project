@@ -12,10 +12,10 @@ app.use(express.json());
 
 // Kết nối đến cơ sở dữ liệu SQLite (lưu trữ trong file database.db)
 let db = new sqlite3.Database(path.resolve(__dirname, 'database.db'), (err) => {
-  if (err) {
-    console.error(err.message);
-  }
-  console.log('Connected to the SQLite database.');
+    if (err) {
+        console.error(err.message);
+    }
+    console.log('Connected to the SQLite database.');
 });
 
 // Bật hỗ trợ khóa ngoại
@@ -23,7 +23,7 @@ db.run('PRAGMA foreign_keys = ON;');
 
 // Tạo các bảng theo đặc tả hệ thống, chỉ tạo nếu chưa tồn tại
 db.serialize(() => {
-  db.run(`CREATE TABLE IF NOT EXISTS SinhVien (
+    db.run(`CREATE TABLE IF NOT EXISTS SinhVien (
     MSSV TEXT PRIMARY KEY,
     Ten TEXT,
     NgaySinh DATE,
@@ -39,7 +39,7 @@ db.serialize(() => {
     FOREIGN KEY (MaNganh) REFERENCES NganhHoc(MaNganh)
   )`);
 
-  db.run(`CREATE TABLE IF NOT EXISTS LopHoc (
+    db.run(`CREATE TABLE IF NOT EXISTS LopHoc (
     MaLop TEXT PRIMARY KEY,
     TenLop TEXT,
     SoLuongSV INTEGER,
@@ -47,13 +47,13 @@ db.serialize(() => {
     FOREIGN KEY (ID) REFERENCES User(ID)
   )`);
 
-  db.run(`CREATE TABLE IF NOT EXISTS MonHoc (
+    db.run(`CREATE TABLE IF NOT EXISTS MonHoc (
     MaMonHoc TEXT PRIMARY KEY,
     TenMonHoc TEXT,
     SoTinChi INTEGER
   )`);
 
-  db.run(`CREATE TABLE IF NOT EXISTS Diem (
+    db.run(`CREATE TABLE IF NOT EXISTS Diem (
     MSSV TEXT,
     MaMonHoc TEXT,
     Diem1 REAL,
@@ -66,17 +66,20 @@ db.serialize(() => {
     FOREIGN KEY (MaMonHoc) REFERENCES MonHoc(MaMonHoc)
   )`);
 
-  db.run(`CREATE TABLE IF NOT EXISTS PhienDiemDanh (
+    db.run(`CREATE TABLE IF NOT EXISTS PhienDiemDanh (
     MaPhien TEXT PRIMARY KEY,
     MSSV TEXT,
     MaLop TEXT,
-    ThoiGian TEXT,
-    DaDiemDanh BOOLEAN,
+    Dd1 BOOLEAN,
+    Dd2 BOOLEAN,
+    Dd3 BOOLEAN,
+    Dd4 BOOLEAN,
+    Dd5 BOOLEAN,
     FOREIGN KEY (MSSV) REFERENCES SinhVien(MSSV),
     FOREIGN KEY (MaLop) REFERENCES LopHoc(MaLop)
   )`);
 
-  db.run(`CREATE TABLE IF NOT EXISTS User (
+    db.run(`CREATE TABLE IF NOT EXISTS User (
     ID TEXT PRIMARY KEY,
     HoVaTen TEXT,
     TenDangNhap TEXT,
@@ -86,13 +89,13 @@ db.serialize(() => {
     Quyen INTEGER DEFAULT 0
   )`);
 
-  db.run(`CREATE TABLE IF NOT EXISTS NganhHoc (
+    db.run(`CREATE TABLE IF NOT EXISTS NganhHoc (
     MaNganh TEXT PRIMARY KEY,
     TenNganh TEXT,
     SoLuongSV INTEGER
   )`);
 
-  db.run(`CREATE TABLE IF NOT EXISTS NganhMonHoc (
+    db.run(`CREATE TABLE IF NOT EXISTS NganhMonHoc (
     MaNganh TEXT,
     MaMonHoc TEXT,
     PRIMARY KEY (MaNganh, MaMonHoc),
@@ -100,7 +103,7 @@ db.serialize(() => {
     FOREIGN KEY (MaMonHoc) REFERENCES MonHoc(MaMonHoc)
   )`);
 
-  db.run(`CREATE TABLE IF NOT EXISTS SinhVienLopHoc (
+    db.run(`CREATE TABLE IF NOT EXISTS SinhVienLopHoc (
     MSSV TEXT,
     MaLop TEXT,
     PRIMARY KEY (MSSV, MaLop),
@@ -108,7 +111,7 @@ db.serialize(() => {
     FOREIGN KEY (MaLop) REFERENCES LopHoc(MaLop)
   )`);
 
-  db.run(`CREATE TABLE IF NOT EXISTS LopMonHoc (
+    db.run(`CREATE TABLE IF NOT EXISTS LopMonHoc (
     MaLop TEXT,
     MaMonHoc TEXT,
     PRIMARY KEY (MaLop, MaMonHoc),
@@ -118,60 +121,86 @@ db.serialize(() => {
 });
 
 app.post('/login', (req, res) => {
-  const { username, password } = req.body;
-  db.get('SELECT * FROM User WHERE TenDangNhap = ? AND MatKhau = ?', [username, password], (err, row) => {
-    if (err) {
-      res.status(500).json({ error: err.message });
-      return;
-    }
-    if (row) {
-      res.status(200).json({ message: 'Login successful', user: row });
-    } else {
-      res.status(401).json({ message: 'Invalid credentials' });
-    }
-  });
+    const { username, password } = req.body;
+    db.get('SELECT * FROM User WHERE TenDangNhap = ? AND MatKhau = ?', [username, password], (err, row) => {
+        if (err) {
+            res.status(500).json({ error: err.message });
+            return;
+        }
+        if (row) {
+            res.status(200).json({ message: 'Login successful', user: row });
+        } else {
+            res.status(401).json({ message: 'Invalid credentials' });
+        }
+    });
 });
 
 app.post('/signup', (req, res) => {
-  const { fullName, username, email, phoneNumber, password } = req.body;
-  // Kiểm tra xem người dùng đã tồn tại trong cơ sở dữ liệu chưa
-  db.get('SELECT * FROM User WHERE TenDangNhap = ?', [username], (err, row) => {
-    if (err) {
-      res.status(500).json({ error: err.message });
-      return;
-    }
-    if (row) {
-      res.status(400).json({ message: 'Username already exists' });
-    } else {
-      // Thêm người dùng mới vào cơ sở dữ liệu
-      db.run('INSERT INTO User (HoVaTen, TenDangNhap, MatKhau, SDT, Email) VALUES (?, ?, ?, ?, ?)', [fullName, username, password, phoneNumber, email], (err) => {
+    const { fullName, username, email, phoneNumber, password } = req.body;
+    // Kiểm tra xem người dùng đã tồn tại trong cơ sở dữ liệu chưa
+    db.get('SELECT * FROM User WHERE TenDangNhap = ?', [username], (err, row) => {
         if (err) {
-          res.status(500).json({ error: err.message });
-          return;
+            res.status(500).json({ error: err.message });
+            return;
         }
-        res.status(201).json({ message: 'Signup successful' });
-      });
-    }
-  });
+        if (row) {
+            res.status(400).json({ message: 'Username already exists' });
+        } else {
+            // Thêm người dùng mới vào cơ sở dữ liệu
+            db.run('INSERT INTO User (HoVaTen, TenDangNhap, MatKhau, SDT, Email) VALUES (?, ?, ?, ?, ?)', [fullName, username, password, phoneNumber, email], (err) => {
+                if (err) {
+                    res.status(500).json({ error: err.message });
+                    return;
+                }
+                res.status(201).json({ message: 'Signup successful' });
+            });
+        }
+    });
+});
+
+
+app.post('/changepassword', (req, res) => {
+    const { username, oldPassword, newPassword } = req.body;
+
+    // Kiểm tra xem người dùng tồn tại và mật khẩu cũ chính xác
+    db.get('SELECT * FROM User WHERE TenDangNhap = ? AND MatKhau = ?', [username, oldPassword], (err, row) => {
+        if (err) {
+            res.status(500).json({ error: err.message });
+            return;
+        }
+        if (!row) {
+            res.status(401).json({ message: 'Invalid credentials' });
+            return;
+        }
+
+        // Cập nhật mật khẩu mới vào cơ sở dữ liệu
+        db.run('UPDATE User SET MatKhau = ? WHERE TenDangNhap = ?', [newPassword, username], (err) => {
+            if (err) {
+                res.status(500).json({ error: err.message });
+                return;
+            }
+            res.status(200).json({ message: 'Password changed successfully' });
+        });
+    });
 });
 
 // Route thêm mới sinh viên
 app.post('/addnew', (req, res) => {
-  const { mssv, name, ngaysinh, gioitinh, cccd, dantoc, quequan, email, sdt, nganhhoc, diachi } = req.body;
+    const { mssv, name, ngaysinh, gioitinh, cccd, dantoc, quequan, email, sdt, nganhhoc, diachi } = req.body;
 
-  const sql = `INSERT INTO SinhVien (MSSV, Ten, NgaySinh, GioiTinh, CCCD, DanToc, QueQuan, Email, SoDienThoai, MaNganh, Address)
+    const sql = `INSERT INTO SinhVien (MSSV, Ten, NgaySinh, GioiTinh, CCCD, DanToc, QueQuan, Email, SoDienThoai, MaNganh, Address)
                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
-  db.run(sql, [mssv, name, ngaysinh, gioitinh, cccd, dantoc, quequan, email, sdt, nganhhoc, diachi], function (err) {
-    if (err) {
-      res.status(500).json({ error: 'Thêm mới sinh viên thất bại' });
-      return;
-    }
-    res.status(200).json({ message: 'Thêm mới sinh viên thành công' });
-  });
+    db.run(sql, [mssv, name, ngaysinh, gioitinh, cccd, dantoc, quequan, email, sdt, nganhhoc, diachi], function(err) {
+        if (err) {
+            res.status(500).json({ error: 'Thêm mới sinh viên thất bại' });
+            return;
+        }
+        res.status(200).json({ message: 'Thêm mới sinh viên thành công' });
+    });
 });
 
 // Khởi động server
 app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+    console.log(`Server is running on port ${port}`);
 });

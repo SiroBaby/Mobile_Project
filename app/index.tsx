@@ -8,7 +8,7 @@ const Login = () => {
     const [password, setPassword] = useState('');
 
     const handleLogin = () => {
-        fetch('http://172.16.101.114:3000/login', {
+        fetch('http://192.168.1.7:3000/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -63,6 +63,12 @@ const Login = () => {
             <TouchableOpacity style={tw`bg-[#EEF4FF] p-3 items-center rounded-xl mb-5 w-78`}>
                 <Link href={'/Sign-up'}>
                     <Text style={tw`text-[#2E328C] font-bold`}>ĐĂNG KÍ</Text>
+                </Link>
+            </TouchableOpacity>
+            
+            <TouchableOpacity style={tw`bg-[#EEF4FF] p-3 items-center rounded-xl mb-5 w-78`}>
+                <Link href={'/Change-pass'}>
+                    <Text style={tw`text-[#2E328C] font-bold`}>ĐỔI MẬT KHẨU </Text>
                 </Link>
             </TouchableOpacity>
         </View>
