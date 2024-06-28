@@ -2,10 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
-
 const app = express();
 const port = 3000;
-
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -70,11 +68,8 @@ db.serialize(() => {
     MaPhien TEXT PRIMARY KEY,
     MSSV TEXT,
     MaLop TEXT,
-    Dd1 BOOLEAN,
-    Dd2 BOOLEAN,
-    Dd3 BOOLEAN,
-    Dd4 BOOLEAN,
-    Dd5 BOOLEAN,
+    ThoiGian TEXT,
+    DaDiemDanh BOOLEAN,
     FOREIGN KEY (MSSV) REFERENCES SinhVien(MSSV),
     FOREIGN KEY (MaLop) REFERENCES LopHoc(MaLop)
   )`);
@@ -155,32 +150,6 @@ app.post('/signup', (req, res) => {
                 res.status(201).json({ message: 'Signup successful' });
             });
         }
-    });
-});
-
-
-app.post('/changepassword', (req, res) => {
-    const { username, oldPassword, newPassword } = req.body;
-
-    // Kiểm tra xem người dùng tồn tại và mật khẩu cũ chính xác
-    db.get('SELECT * FROM User WHERE TenDangNhap = ? AND MatKhau = ?', [username, oldPassword], (err, row) => {
-        if (err) {
-            res.status(500).json({ error: err.message });
-            return;
-        }
-        if (!row) {
-            res.status(401).json({ message: 'Invalid credentials' });
-            return;
-        }
-
-        // Cập nhật mật khẩu mới vào cơ sở dữ liệu
-        db.run('UPDATE User SET MatKhau = ? WHERE TenDangNhap = ?', [newPassword, username], (err) => {
-            if (err) {
-                res.status(500).json({ error: err.message });
-                return;
-            }
-            res.status(200).json({ message: 'Password changed successfully' });
-        });
     });
 });
 
