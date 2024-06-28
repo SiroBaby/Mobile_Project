@@ -23,7 +23,7 @@ const SubjectGradeScreen = () => {
     { mssv: '2254810051', name: 'Trần Thị B', score1: '', score2: '', score3: '', score4: '', TB:'', KQ:'' },
     { mssv: '2254810077', name: 'Phạm Văn C', score1: '', score2: '', score3: '', score4: '', TB:'', KQ:'' },
     { mssv: '2254810080', name: 'Phạm Văn D', score1: '', score2: '', score3: '', score4: '', TB:'', KQ:'' },
-    { mssv: '2254810083', name: 'Phạm Văn E', score1: '', score2: '', score3: '', score4: '', TB:'', KQ:'' },
+    { mssv: '2254810022', name: 'Phạm Văn E', score1: '', score2: '', score3: '', score4: '', TB:'', KQ:'' },
     { mssv: '2254810066', name: 'Phạm Văn Ei', score1: '', score2: '', score3: '', score4: '', TB:'', KQ:'' },
     
   ]);
@@ -123,7 +123,7 @@ const SubjectGradeScreen = () => {
             {expandedStudents[student.mssv] && (
               <DataTable.Row key={`${student.mssv}-expanded`}>
                 <DataTable.Cell style={{ justifyContent: 'center', alignItems: 'center', borderRightWidth: 0.2, backgroundColor: '#f6f6ee'}}>
-                  Đ1
+                  Đ1:
                   <TextInput
                     style={styles.input}
                     keyboardType="numeric"
