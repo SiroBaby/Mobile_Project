@@ -1,20 +1,12 @@
 // src/screens/Home.tsx
 import React from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import { Text, View, Image, TouchableOpacity } from 'react-native';
 import tw from 'twrnc';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
 import { RootStackParamList } from '../types';
 
 const Home = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-
-  const addNew = () => {
-    navigation.navigate('addnew');
-  };
-
-  const List = () => {
-    navigation.navigate('list');
-  };
 
   const Attendance = () => {
     navigation.navigate('attendance');
@@ -36,45 +28,17 @@ const Home = () => {
           style={tw`w-14 h-12 mt-8`}
         />
         <View style={tw`w-0.5 h-12 bg-black ml-3 mt-8`} />
-        <Text style={tw`text-xl ml-3 mt-8`}>Xin Chào NHÓM 2!</Text>
+        <Text style={tw`text-xl ml-3 mt-8`}>Xin Chào giảng viên!</Text>
       </View>
-      <View style={tw`w-full h-0.2 bg-black/20`} />
-      <Text style={tw`text-xl font-bold py-2`}>Chức năng</Text>
-      <View style={tw`flex flex-row justify-around`}>
-        <TouchableOpacity style={tw`items-center`} onPress={addNew}>
-          <View style={tw`bg-blue-900/5 w-43 h-24 rounded-3xl items-center justify-center`}>
-            <Image
-              source={require('@/assets/images/icon/8726254_plus_circle_icon.png')}
-              style={tw`w-14 h-14 `}
-            />
-          </View>
-          <Text style={tw`text-lg mt-2 font-semibold`}>Thêm sinh Viên</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={tw`items-center`} onPress={List}>
-          <View style={tw`bg-blue-900/5 w-43 h-24 rounded-3xl items-center justify-center`}>
-            <Image
-              source={require('@/assets/images/icon/8726093_list_ul_icon.png')}
-              style={tw`w-14 h-14 `}
-            />
-          </View>
-          <Text style={tw`text-lg mt-2 font-semibold`}>Danh Sách</Text>
-        </TouchableOpacity>
+      <View style={tw`justify-around items-center`}>
+        <Text style={tw`text-xl font-bold py-4`}>Quản trị viên</Text>
       </View>
       <View style={tw`flex flex-row justify-around mt-6`}>
-        <TouchableOpacity style={tw`items-center`} onPress={List}>
-          <View style={tw`bg-blue-900/5 w-43 h-24 rounded-3xl items-center justify-center`}>
-            <Image
-              source={require('@/assets/images/icon/8726214_search_icon.png')}
-              style={tw`w-14 h-14 `}
-            />
-          </View>
-          <Text style={tw`text-lg mt-2 font-semibold`}>Tìm Kiếm</Text>
-        </TouchableOpacity>
         <TouchableOpacity style={tw`items-center`} onPress={Attendance}>
-          <View style={tw`bg-blue-900/5 w-43 h-24 rounded-3xl items-center justify-center`}>
+          <View style={tw`bg-blue-900/5 w-80 h-50 rounded-3xl items-center justify-center`}>
             <Image
               source={require('@/assets/images/icon/8726458_user_check_icon.png')}
-              style={tw`w-14 h-14 `}
+              style={tw`w-25 h-25 `}
             />
           </View>
           <Text style={tw`text-lg mt-2 font-semibold`}>Điểm Danh</Text>
@@ -82,19 +46,21 @@ const Home = () => {
       </View>
       <View style={tw`flex flex-row justify-around mt-6`}>
         <TouchableOpacity style={tw`items-center`} onPress={Inputscore}>
-          <View style={tw`bg-blue-900/5 w-43 h-24 rounded-3xl items-center justify-center`}>
+          <View style={tw`bg-blue-900/5 w-80 h-50 rounded-3xl items-center justify-center`}>
             <Image
               source={require('@/assets/images/icon/8725775_edit_icon.png')}
-              style={tw`w-14 h-14 `}
+              style={tw`w-25 h-25 `}
             />
           </View>
           <Text style={tw`text-lg mt-2 font-semibold`}>Nhập điểm</Text>
         </TouchableOpacity>
+      </View>
+      <View style={tw`flex flex-row justify-around mt-6`}>
         <TouchableOpacity style={tw`items-center`} onPress={Subrp}>
-          <View style={tw`bg-blue-900/5 w-43 h-24 rounded-3xl items-center justify-center`}>
+          <View style={tw`bg-blue-900/5 w-80 h-80 rounded-3xl items-center justify-center`}>
             <Image
               source={require('@/assets/images/icon/8725582_chart_line_icon.png')}
-              style={tw`w-14 h-14 `}
+              style={tw`w-25 h-25 `}
             />
           </View>
           <Text style={tw`text-lg mt-2 font-semibold`}>Nộp báo cáo</Text>
@@ -109,5 +75,3 @@ const Home = () => {
 }
 
 export default Home;
-
-const styles = StyleSheet.create({});
