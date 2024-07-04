@@ -10,16 +10,16 @@ const Home = () => {
 
   return (
     <View style={tw`flex-1 bg-white p-2`}>
-      <View style={tw`bg-white py-1 flex-row items-center`}>
+      <View style={tw`bg-white py-1 flex-row items-center mt-8`}>
         <Image
           source={require('@/assets/images/logo/vina-qt-high-resolution-logo-black-transparent.png')}
-          style={tw`w-14 h-12 mt-2`}
+          style={tw`w-14 h-12 `}
         />
-        <View style={tw`w-0.5 h-12 bg-black ml-3 mt-2`} />
-        <Text style={tw`text-xl ml-3 mt-2`}></Text>
+        <View style={tw`w-0.5 h-12 bg-black ml-3`} />
+        <Text style={tw`text-xl text-blue-900 font-bold ml-3`}>Đăng xuất</Text>
       </View>
 
-      <View style={tw`bg-black w-full h-40 rounded-2xl relative items-center`}>
+      <View style={tw`bg-black w-full h-40 rounded-2xl relative items-center mt-2`}>
         <Image
           source={require('@/assets/images/pexels-netviet-media-1139605192-22848375.jpg')}
           style={tw`w-full h-40 rounded-2xl opacity-80`}

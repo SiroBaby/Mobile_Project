@@ -22,7 +22,7 @@ const Home = () => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-    <View style={tw`flex-1 bg-white`}>
+    <View style={tw`flex-1 bg-white mt-8`}>
       <View style={tw`bg-white flex-row items-center`}>
         <Image
           source={require('@/assets/images/logo/vina-qt-high-resolution-logo-black-transparent.png')}
