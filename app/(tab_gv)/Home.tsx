@@ -31,7 +31,7 @@ const Home = () => {
         <Text style={tw`text-xl ml-3 mt-8`}>Xin Chào giảng viên!</Text>
       </View>
       <View style={tw`justify-around items-center`}>
-        <Text style={tw`text-xl font-bold py-4`}>Quản trị viên</Text>
+        <Text style={tw`text-xl font-bold py-4`}>Tên giảng viên</Text>
       </View>
       <View style={tw`flex flex-row justify-around mt-6`}>
         <TouchableOpacity style={tw`items-center`} onPress={Attendance}>
