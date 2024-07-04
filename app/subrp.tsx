@@ -1,70 +1,49 @@
-import { View, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
-import React from 'react';
-import { Link, router } from 'expo-router';
+import React, { useState } from 'react';
+import { View, ScrollView, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
 import tw from 'twrnc';
-
-import { DataTable } from 'react-native-paper';
+import { Text, Button } from 'react-native-paper'; // Sử dụng Button từ react-native-paper hoặc TouchableOpacity
 
 const MyComponent = () => {
-  const [page, setPage] = React.useState<number>(0);
-  const [numberOfItemsPerPageList] = React.useState([2, 3, 4]);
-  const [itemsPerPage, onItemsPerPageChange] = React.useState(
-    numberOfItemsPerPageList[0]
-  );
+  const [inputValue, setInputValue] = useState('');
 
-  const [items] = React.useState([
-   {
-     key: 1,
-     name: 'Cupcake',
-     calories: 356,
-     fat: 16,
-   },
-   {
-     key: 2,
-     name: 'Eclair',
-     calories: 262,
-     fat: 16,
-   },
-   {
-     key: 3,
-     name: 'Frozen yogurt',
-     calories: 159,
-     fat: 6,
-   },
-   {
-     key: 4,
-     name: 'Gingerbread',
-     calories: 305,
-     fat: 3.7,
-   },
-  ]);
-
-  const from = page * itemsPerPage;
-  const to = Math.min((page + 1) * itemsPerPage, items.length);
-
-  React.useEffect(() => {
-    setPage(0);
-  }, [itemsPerPage]);
+  const handleSubmit = () => {
+    // Xử lý khi nút nộp được nhấn
+    console.log('Submitted:', inputValue);
+    // Thực hiện các thao tác cần thiết sau khi nộp dữ liệu, ví dụ như gửi dữ liệu lên server
+  };
 
   return (
-    <DataTable>
-      <DataTable.Header>
-        <DataTable.Title>Dessert</DataTable.Title>
-        <DataTable.Title numeric>Calories</DataTable.Title>
-        <DataTable.Title numeric>Fat</DataTable.Title>
-      </DataTable.Header>
+    <ScrollView contentContainerStyle={styles.container}>
+      <View style={tw`flex-1 bg-white`}>
+        <View style={tw`justify-around items-center pt-5`}>
+          <Text style={tw`text-2xl text-blue-900 font-bold py-5`}>Báo cáo</Text>
 
-      {items.slice(from, to).map((item) => (
-        <DataTable.Row key={item.key}>
-          <DataTable.Cell>{item.name}</DataTable.Cell>
-          <DataTable.Cell numeric>{item.calories}</DataTable.Cell>
-          <DataTable.Cell numeric>{item.fat}</DataTable.Cell>
-        </DataTable.Row>
-      ))}
+          {/* Form nhập nội dung */}
+          <TextInput
+            style={tw`border border-gray-300 rounded-lg px-4 py-2 w-80`}
+            placeholder="Nhập nội dung báo cáo"
+            value={inputValue}
+            onChangeText={text => setInputValue(text)}
+            multiline
+          />
 
-      
-    </DataTable>
+          {/* Nút nộp */}
+          <TouchableOpacity onPress={handleSubmit} style={tw`bg-blue-900 mt-3 px-4 py-2 rounded-lg mt-5`}>
+            <Text style={tw`text-white text-XL font-bold`}>NỘP</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </ScrollView>
   );
-};
+}
 
 export default MyComponent;
+
+const styles = StyleSheet.create({
+  container: {
+    flexGrow: 1,
+    alignItems: 'center',
+    backgroundColor: '#ffffff',
+    paddingVertical: 16,
+  },
+});

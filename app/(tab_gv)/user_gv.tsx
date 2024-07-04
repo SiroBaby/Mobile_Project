@@ -9,14 +9,14 @@ const Home = () => {
   };
 
   return (
-    <View style={tw`flex-1 bg-white p-3`}>
+    <View style={tw`flex-1 bg-white p-2`}>
       <View style={tw`bg-white py-1 flex-row items-center`}>
         <Image
           source={require('@/assets/images/logo/vina-qt-high-resolution-logo-black-transparent.png')}
-          style={tw`w-14 h-12 mt-8`}
+          style={tw`w-14 h-12 mt-2`}
         />
-        <View style={tw`w-0.5 h-12 bg-black ml-3 mt-8`} />
-        <Text style={tw`text-xl ml-3 mt-8`}></Text>
+        <View style={tw`w-0.5 h-12 bg-black ml-3 mt-2`} />
+        <Text style={tw`text-xl ml-3 mt-2`}></Text>
       </View>
 
       <View style={tw`bg-black w-full h-40 rounded-2xl relative items-center`}>
@@ -43,6 +43,7 @@ const Home = () => {
       >
         <Text style={tw`text-white text-base font-bold`}>ĐĂNG XUẤT</Text>
       </Pressable>
+     
     </View>
   );
 };

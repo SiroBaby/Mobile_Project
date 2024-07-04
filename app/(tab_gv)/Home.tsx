@@ -1,10 +1,9 @@
 // src/screens/Home.tsx
 import React from 'react';
-import { View, ScrollView, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import tw from 'twrnc';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
 import { RootStackParamList } from '../types';
-import { Text } from 'react-native-paper';
 
 const Home = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
@@ -30,11 +29,11 @@ const Home = () => {
           style={tw`w-14 h-12 mt-3`}
         />
         <View style={tw`w-0.5 h-12 bg-black ml-3 mt-2`} />
-        <Text style={tw`text-xl text-blue-900 ml-3 mt-3`}>Xin Chào giảng viên!</Text>
+        <Text style={tw`text-xl text-blue-900 ml-3 mt-3`}>Xin Chào Giảng Viên!</Text>
       </View>
       <View style={tw`justify-around items-center pt-5`}>
-        <Text style={tw`text-2xl font-bold py-2`}>Tên giảng viên</Text> {/*chỗ này để tên giảng viên nè */}
-        <Text style={tw`text-xl text-blue-900 font-semibold py-2`}>Tên Môn học</Text> {/*chỗ này đểtên môn học hay lớp học phần nè */}
+        <Text style={tw`text-2xl font-bold py-2`}>Tên giảng viên</Text> 
+        <Text style={tw`text-xl text-blue-900 font-semibold py-2`}>Tên Môn học</Text> 
       </View>
       <View style={tw`flex flex-row justify-around mt-3`}>
         <TouchableOpacity style={tw`items-center`} onPress={Attendance}>
