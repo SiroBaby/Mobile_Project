@@ -1,9 +1,10 @@
 // src/screens/Home.tsx
 import React from 'react';
-import { Text, View, ScrollView, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, ScrollView, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import tw from 'twrnc';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
 import { RootStackParamList } from '../types';
+import { Text } from 'react-native-paper';
 
 const Home = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
@@ -22,17 +23,18 @@ const Home = () => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-    <View style={tw`flex-1 bg-white p-3`}>
-      <View style={tw`bg-white py-1 flex-row items-center`}>
+    <View style={tw`flex-1 bg-white`}>
+      <View style={tw`bg-white flex-row items-center`}>
         <Image
           source={require('@/assets/images/logo/vina-qt-high-resolution-logo-black-transparent.png')}
           style={tw`w-14 h-12 mt-3`}
         />
-        <View style={tw`w-0.5 h-12 bg-black ml-3 mt-3`} />
-        <Text style={tw`text-xl ml-3 mt-8`}>Xin Chào giảng viên!</Text>
+        <View style={tw`w-0.5 h-12 bg-black ml-3 mt-2`} />
+        <Text style={tw`text-xl text-blue-900 ml-3 mt-3`}>Xin Chào giảng viên!</Text>
       </View>
-      <View style={tw`justify-around items-center`}>
-        <Text style={tw`text-xl font-bold py-2`}>Tên giảng viên</Text>
+      <View style={tw`justify-around items-center pt-5`}>
+        <Text style={tw`text-2xl font-bold py-2`}>Tên giảng viên</Text> {/*chỗ này để tên giảng viên nè */}
+        <Text style={tw`text-xl text-blue-900 font-semibold py-2`}>Tên Môn học</Text> {/*chỗ này đểtên môn học hay lớp học phần nè */}
       </View>
       <View style={tw`flex flex-row justify-around mt-3`}>
         <TouchableOpacity style={tw`items-center`} onPress={Attendance}>
@@ -42,7 +44,7 @@ const Home = () => {
               style={tw`w-25 h-25 `}
             />
           </View>
-          <Text style={tw`text-lg mt-2 font-semibold`}>Điểm Danh</Text>
+          <Text style={tw`text-lg text-blue-900 mt-2 font-semibold`}>Điểm Danh</Text>
         </TouchableOpacity>
       </View>
       <View style={tw`flex flex-row justify-around mt-3`}>
@@ -53,18 +55,18 @@ const Home = () => {
               style={tw`w-25 h-25 `}
             />
           </View>
-          <Text style={tw`text-lg mt-2 font-semibold`}>Nhập điểm</Text>
+          <Text style={tw`text-lg text-blue-900 mt-2 font-semibold`}>Nhập điểm</Text>
         </TouchableOpacity>
       </View>
       <View style={tw`flex flex-row justify-around mt-3`}>
         <TouchableOpacity style={tw`items-center`} onPress={Subrp}>
-          <View style={tw`bg-blue-900/5 w-80 h-80 rounded-3xl items-center justify-center`}>
+          <View style={tw`bg-blue-900/5 w-80 h-50 rounded-3xl items-center justify-center`}>
             <Image
               source={require('@/assets/images/icon/8725582_chart_line_icon.png')}
               style={tw`w-25 h-25 `}
             />
           </View>
-          <Text style={tw`text-lg mt-2 font-semibold`}>Nộp báo cáo</Text>
+          <Text style={tw`text-lg text-blue-900 mt-2 font-semibold`}>Nộp báo cáo</Text>
         </TouchableOpacity>
       </View>
       <Image
