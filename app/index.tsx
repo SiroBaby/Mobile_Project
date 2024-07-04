@@ -8,7 +8,7 @@ const Login = () => {
     const [password, setPassword] = useState('');
 
     const handleLogin = () => {
-        fetch('http://192.168.0.110:3000/login', {
+        fetch('http://192.168.0.20:3000/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

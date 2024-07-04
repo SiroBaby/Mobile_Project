@@ -153,7 +153,7 @@ app.post('/signup', (req, res) => {
     });
 });
 
-// Route thêm mới sinh viên
+//Api thêm mới sinh viên
 app.post('/addnew', (req, res) => {
     const { mssv, name, ngaysinh, gioitinh, cccd, dantoc, quequan, email, sdt, nganhhoc, diachi } = req.body;
 
@@ -168,6 +168,30 @@ app.post('/addnew', (req, res) => {
         res.status(200).json({ message: 'Thêm mới sinh viên thành công' });
     });
 });
+
+//Api lấy danh sách toàn bộ sinh viên
+app.get('/getstudents', (req, res) => {
+  const sql = `
+    SELECT 
+      SinhVien.MSSV, 
+      SinhVien.Ten, 
+      LopHoc.MaLop 
+    FROM 
+      SinhVien 
+    JOIN 
+      SinhVienLopHoc ON SinhVien.MSSV = SinhVienLopHoc.MSSV 
+    JOIN 
+      LopHoc ON LopHoc.MaLop = SinhVienLopHoc.MaLop
+  `;
+  db.all(sql, [], (err, rows) => {
+      if (err) {
+          res.status(500).json({ error: err.message });
+          return;
+      }
+      res.status(200).json(rows);
+  });
+});
+
 
 // Khởi động server
 app.listen(port, () => {
