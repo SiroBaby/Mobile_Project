@@ -8,7 +8,7 @@ const Login = () => {
     const [password, setPassword] = useState('');
 
     const handleLogin = () => {
-        fetch('http://192.168.0.110:3000/login', {
+        fetch('http://172.19.200.140:3000/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -22,7 +22,7 @@ const Login = () => {
             .then((data) => {
                 if (data.message === 'Login successful') {
                     Alert.alert('Success', 'Login successful');
-                    router.push('Home');
+                    router.push('Home_ad');
                 } else {
                     Alert.alert('Error', 'Thông tin không hợp lệ');
                 }

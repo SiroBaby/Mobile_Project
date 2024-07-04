@@ -82,9 +82,9 @@ const TabNavigator = () => {
     return (
         <Tabs screenOptions={{ tabBarShowLabel: false }}>
             <Tabs.Screen
-                name="Home"
+                name="Home_ad"
                 options={{
-                    title: 'Home',
+                    title: 'Home_ad',
                     headerShown: false,
                     tabBarIcon: ({ color, focused }) => <HomeIcon color={color} focused={focused} />,
                 }}
