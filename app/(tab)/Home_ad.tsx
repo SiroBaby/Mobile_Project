@@ -28,26 +28,31 @@ const Home = () => {
         <Text style={tw`text-xl ml-3 mt-8`}>Xin Chào NHÓM 2!</Text>
       </View>
       <View style={tw`w-full h-0.2 bg-black/20`} />
-      <Text style={tw`text-xl font-bold py-2`}>Quản trị viên</Text>
+      <Text style={tw`text-xl font-bold py-4`}>Quản trị viên</Text>
+      <View style={tw`flex flex-row justify-around p-5`}>
+      <TouchableOpacity style={tw`items-center`} onPress={List}>
+          <View style={tw`bg-blue-900/5 w-80 h-50 rounded-3xl items-center justify-center`}>
+            <Image
+              source={require('@/assets/images/icon/8726093_list_ul_icon.png')}
+              style={tw`w-30 h-30 `}
+            />
+          </View>
+          <Text style={tw`text-lg mt-2 font-semibold`}>Danh Sách sinh viên</Text>
+        </TouchableOpacity>
+      </View>
+
       <View style={tw`flex flex-row justify-around`}>
+      
         <TouchableOpacity style={tw`items-center`} onPress={addNew}>
-          <View style={tw`bg-blue-900/5 w-43 h-24 rounded-3xl items-center justify-center`}>
+          <View style={tw`bg-blue-900/5 w-80 h-50 rounded-3xl items-center justify-center`}>
             <Image
               source={require('@/assets/images/icon/8726254_plus_circle_icon.png')}
-              style={tw`w-14 h-14 `}
+              style={tw`w-30 h-30 `}
             />
           </View>
           <Text style={tw`text-lg mt-2 font-semibold`}>Thêm sinh Viên</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={tw`items-center`} onPress={List}>
-          <View style={tw`bg-blue-900/5 w-43 h-24 rounded-3xl items-center justify-center`}>
-            <Image
-              source={require('@/assets/images/icon/8726093_list_ul_icon.png')}
-              style={tw`w-14 h-14 `}
-            />
-          </View>
-          <Text style={tw`text-lg mt-2 font-semibold`}>Danh Sách</Text>
-        </TouchableOpacity>
+        
       </View>
       <View style={tw`flex flex-row justify-around mt-6`}>
       </View>
