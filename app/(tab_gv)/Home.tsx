@@ -1,6 +1,6 @@
 // src/screens/Home.tsx
 import React from 'react';
-import { Text, View, Image, TouchableOpacity } from 'react-native';
+import { Text, View, ScrollView, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import tw from 'twrnc';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
 import { RootStackParamList } from '../types';
@@ -21,19 +21,20 @@ const Home = () => {
   };
 
   return (
+    <ScrollView contentContainerStyle={styles.container}>
     <View style={tw`flex-1 bg-white p-3`}>
       <View style={tw`bg-white py-1 flex-row items-center`}>
         <Image
           source={require('@/assets/images/logo/vina-qt-high-resolution-logo-black-transparent.png')}
-          style={tw`w-14 h-12 mt-8`}
+          style={tw`w-14 h-12 mt-3`}
         />
-        <View style={tw`w-0.5 h-12 bg-black ml-3 mt-8`} />
+        <View style={tw`w-0.5 h-12 bg-black ml-3 mt-3`} />
         <Text style={tw`text-xl ml-3 mt-8`}>Xin Chào giảng viên!</Text>
       </View>
       <View style={tw`justify-around items-center`}>
-        <Text style={tw`text-xl font-bold py-4`}>Tên giảng viên</Text>
+        <Text style={tw`text-xl font-bold py-2`}>Tên giảng viên</Text>
       </View>
-      <View style={tw`flex flex-row justify-around mt-6`}>
+      <View style={tw`flex flex-row justify-around mt-3`}>
         <TouchableOpacity style={tw`items-center`} onPress={Attendance}>
           <View style={tw`bg-blue-900/5 w-80 h-50 rounded-3xl items-center justify-center`}>
             <Image
@@ -44,7 +45,7 @@ const Home = () => {
           <Text style={tw`text-lg mt-2 font-semibold`}>Điểm Danh</Text>
         </TouchableOpacity>
       </View>
-      <View style={tw`flex flex-row justify-around mt-6`}>
+      <View style={tw`flex flex-row justify-around mt-3`}>
         <TouchableOpacity style={tw`items-center`} onPress={Inputscore}>
           <View style={tw`bg-blue-900/5 w-80 h-50 rounded-3xl items-center justify-center`}>
             <Image
@@ -55,7 +56,7 @@ const Home = () => {
           <Text style={tw`text-lg mt-2 font-semibold`}>Nhập điểm</Text>
         </TouchableOpacity>
       </View>
-      <View style={tw`flex flex-row justify-around mt-6`}>
+      <View style={tw`flex flex-row justify-around mt-3`}>
         <TouchableOpacity style={tw`items-center`} onPress={Subrp}>
           <View style={tw`bg-blue-900/5 w-80 h-80 rounded-3xl items-center justify-center`}>
             <Image
@@ -71,7 +72,17 @@ const Home = () => {
         style={tw`absolute w-36 h-36 right-0 bottom-0 opacity-10`}
       />
     </View>
+    </ScrollView>
   );
 }
 
 export default Home;
+
+const styles = StyleSheet.create({
+  container: {
+    flexGrow: 1,
+    alignItems: 'center',
+    backgroundColor: '#ffffff',
+    paddingVertical: 16,
+  },
+});
