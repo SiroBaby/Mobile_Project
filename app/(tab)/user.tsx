@@ -15,6 +15,11 @@ const Home = () => {
     router.push("");
   };
 
+  const Changepass = async () => {
+    // Xử lý đổi mật khẩu
+    router.push("/Change-pass");
+  };
+
   return (
     <View style={tw`flex-1 bg-white p-3`}>
       <View style={tw`bg-white py-1 flex-row items-center`}>
@@ -44,11 +49,19 @@ const Home = () => {
       </View>
 
       <Pressable
+        onPress={Changepass}
+        android_ripple={{ color: 'rgba(255, 255, 255, 0.3)', borderless: true }}
+        style={tw`bg-blue-900 p-3 rounded-xl mt-10 items-center`}
+      >
+        <Text style={tw`text-white text-base font-bold`}>ĐỔI MẬT KHẨU</Text>
+      </Pressable>
+
+      <Pressable
         onPress={handleLogout}
         android_ripple={{ color: 'rgba(255, 255, 255, 0.3)', borderless: true }}
-        style={tw`bg-red-800 p-3 rounded mt-10 items-center`}
+        style={tw`bg-red-800 p-3 rounded-xl mt-3 items-center`}
       >
-        <Text style={tw`text-white text-base font-bold`}>Đăng xuất</Text>
+        <Text style={tw`text-white text-base font-bold`}>ĐĂNG XUẤT</Text>
       </Pressable>
     </View>
   );

@@ -50,20 +50,6 @@ const AddIcon: React.FC<IconProps> = ({ color, focused }) => {
     );
 };
 
-const AttendanceIcon: React.FC<IconProps> = ({ color, focused }) => {
-    return (
-        <View style={tw`items-center ${focused ? 'bg-blue-900/90' : 'bg-transparent'} px-4 py-2 rounded-xl`}>
-            <Image
-                source={require('@/assets/images/icon/8726458_user_check_icon.png')}
-                style={[
-                    tw`w-6 h-6`,
-                    { tintColor: focused ? '#FFFFFF' : '#657786' },
-                ]}
-            />
-        </View>
-    );
-};
-
 const UserIcon: React.FC<IconProps> = ({ color, focused }) => {
     return (
         <View style={tw`items-center ${focused ? 'bg-blue-900/90' : 'bg-transparent'} px-4 py-2 rounded-xl`}>
@@ -101,13 +87,6 @@ const TabNavigator = () => {
                 options={{
                     title: 'Thêm mới',
                     tabBarIcon: ({ color, focused }) => <AddIcon color={color} focused={focused} />,
-                }}
-            />
-            <Tabs.Screen
-                name="attendance"
-                options={{
-                    title: 'Điểm danh',
-                    tabBarIcon: ({ color, focused }) => <AttendanceIcon color={color} focused={focused} />,
                 }}
             />
             <Tabs.Screen
