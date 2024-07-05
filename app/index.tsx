@@ -27,7 +27,7 @@ const Login = () => {
             if (userData) {
                 // Người dùng đã đăng nhập
                 if (userData.Quyen === 1) {
-                    router.push('Admin');
+                    router.push('Home_ad');
                 } else {
                     router.push('Home');
                 }
@@ -73,7 +73,7 @@ const Login = () => {
                     Alert.alert('Success', 'Login successful');
                     saveUserData(data.user);
                     if (data.user.Quyen === 1) {
-                        router.push('Admin');
+                        router.push('Home_ad');
                     } else {
                         router.push('Home');
                     }
