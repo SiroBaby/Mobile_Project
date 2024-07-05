@@ -153,6 +153,8 @@ app.post('/signup', (req, res) => {
     });
 });
 
+//Api đổi mật khẩu
+
 //Api thêm mới sinh viên
 app.post('/addnew', (req, res) => {
     const { mssv, name, ngaysinh, gioitinh, cccd, dantoc, quequan, email, sdt, nganhhoc, diachi } = req.body;
