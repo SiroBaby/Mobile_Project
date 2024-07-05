@@ -2,6 +2,7 @@ import { Link, router } from 'expo-router';
 import React, { useState } from 'react';
 import { Alert, Image, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import tw from 'twrnc';
+import { Button } from 'react-native-paper';
 
 const Login = () => {
     const [username, setUsername] = useState('');
@@ -31,6 +32,9 @@ const Login = () => {
                 console.error('Error:', error);
             });
     };
+    const handleSignUpPress = () => {
+        router.push('/Sign-up'); // Chuyển hướng đến màn hình Sign-up khi TouchableOpacity được nhấn
+      };
 
     return (
         <View style={tw`flex-1 p-5 bg-white items-center justify-center `}>
@@ -66,10 +70,8 @@ const Login = () => {
 
             <Text style={tw`text-center mb-5`}>Quản trị viên chưa có tài khoản</Text>
 
-            <TouchableOpacity style={tw`bg-[#EEF4FF] p-3 items-center rounded-xl mb-5 w-78`}>
-                <Link href={'/Sign-up'}>
-                    <Text style={tw`text-[#2E328C] font-bold`}>ĐĂNG KÍ</Text>
-                </Link>
+            <TouchableOpacity style={tw`bg-[#EEF4FF] p-3 items-center rounded-xl mb-5 w-78`} onPress={handleSignUpPress}>
+                <Text style={tw`text-[#2E328C] font-bold`}>ĐĂNG KÍ</Text>
             </TouchableOpacity>
         </View>
     );
