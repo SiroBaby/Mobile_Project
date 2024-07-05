@@ -127,12 +127,6 @@ const Login = () => {
                 <Text style={tw`text-white font-bold`}>ĐĂNG NHẬP</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={tw`  items-center mb-5 w-78`}>
-                <Link href={'/Change-pass'}>
-                    <Text style={tw`text-[#2E328C] font-bold`}>Quên mật khẩu?</Text>
-                </Link>
-            </TouchableOpacity>
-
             <Text style={tw`text-center mb-5`}>Quản trị viên chưa có tài khoản</Text>
 
             <TouchableOpacity style={tw`bg-[#EEF4FF] p-3 items-center rounded-xl mb-5 w-78`} onPress={handleSignUpPress}>
