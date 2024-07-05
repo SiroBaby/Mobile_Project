@@ -17,7 +17,7 @@ const SignupScreen = () => {
       return;
     }
 
-    fetch('http://192.168.1.7:3000/signup', {
+    fetch('http://localhost:3000/signup', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -45,6 +45,10 @@ const SignupScreen = () => {
         console.error('Error:', error);
       });
   };
+
+  const handleLoginPress = () => {
+    router.push(''); // Chuyển hướng đến màn hình Sign-up khi TouchableOpacity được nhấn
+};
 
   return (
     <View style={tw`flex-1 p-4 bg-white items-center justify-center`}>
@@ -105,7 +109,7 @@ const SignupScreen = () => {
       <Text style={tw`text-center mb-4 text-blue-900`}> --- Quản trị viên đã có tài khoản --- </Text>
 
       
-      <TouchableOpacity style={tw`h-10 bg-blue-100 py-2 px-5 rounded-xl items-center justify-center mb-8 w-72`} onPress={() => {}}>
+      <TouchableOpacity style={tw`h-10 bg-blue-100 py-2 px-5 rounded-xl items-center justify-center mb-8 w-72`} onPress={handleLoginPress}>
         <Link href={''}><Text style={tw`text-blue-900 font-bold pt-0.5`}>ĐĂNG NHẬP</Text></Link>
       </TouchableOpacity>
     </View>

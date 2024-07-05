@@ -1,15 +1,63 @@
 import { Link, router } from 'expo-router';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Alert, Image, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import tw from 'twrnc';
 import { Button } from 'react-native-paper';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+interface UserData {
+    id: string;
+    HoVaTen: string;
+    TenDangNhap: String;
+    MatKhau: String;
+    SDT: number;
+    Email: String;
+    Quyen: number;
+    [key: string]: any; // Add this line to allow additional properties
+}
 
 const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const checkLoginStatus = async () => {
+            const userData = await getUserData();
+            if (userData) {
+                // Người dùng đã đăng nhập
+                if (userData.Quyen === 1) {
+                    router.push('Admin');
+                } else {
+                    router.push('Home');
+                }
+            } else {
+                setLoading(false); // Kết thúc tải nếu không có userData
+            }
+        };
+        checkLoginStatus();
+    }, []);
+
+    const getUserData = async (): Promise<UserData | null> => {
+        try {
+            const jsonValue = await AsyncStorage.getItem('userData');
+            return jsonValue != null ? JSON.parse(jsonValue) : null;
+        } catch (e) {
+            console.error('Failed to load user data', e);
+            return null;
+        }
+    };
+
+    const saveUserData = async (userData: UserData) => {
+        try {
+            await AsyncStorage.setItem('userData', JSON.stringify(userData));
+        } catch (e) {
+            console.error('Failed to save user data', e);
+        }
+    };
 
     const handleLogin = () => {
-        fetch('http://192.168.0.110:3000/login', {
+        fetch('http://localhost:3000/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -23,7 +71,12 @@ const Login = () => {
             .then((data) => {
                 if (data.message === 'Login successful') {
                     Alert.alert('Success', 'Login successful');
-                    router.push('Home');
+                    saveUserData(data.user);
+                    if (data.user.Quyen === 1) {
+                        router.push('Admin');
+                    } else {
+                        router.push('Home');
+                    }
                 } else {
                     Alert.alert('Error', 'Thông tin không hợp lệ');
                 }
@@ -32,9 +85,18 @@ const Login = () => {
                 console.error('Error:', error);
             });
     };
+
     const handleSignUpPress = () => {
         router.push('/Sign-up'); // Chuyển hướng đến màn hình Sign-up khi TouchableOpacity được nhấn
-      };
+    };
+
+    if (loading) {
+        return (
+            <View style={tw`flex-1 items-center justify-center`}>
+                <Text>Loading...</Text>
+            </View>
+        );
+    }
 
     return (
         <View style={tw`flex-1 p-5 bg-white items-center justify-center `}>

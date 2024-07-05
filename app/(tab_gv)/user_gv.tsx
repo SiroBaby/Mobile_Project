@@ -1,11 +1,18 @@
 import React from 'react';
 import { Text, View, Pressable, Image } from 'react-native';
 import tw from 'twrnc';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { router } from 'expo-router';
 
 const Home = () => {
-  const handleLogout = () => {
+  const handleLogout = async () => {
     // Xử lý đăng xuất ở đây
-    console.log('Đăng xuất');
+    try {
+      await AsyncStorage.removeItem('userData');
+    } catch (error) {
+      console.error('Failed to remove user data', error);
+    }
+    router.push("");
   };
 
   return (

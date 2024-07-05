@@ -32,7 +32,7 @@ const AddStudentScreen = () => {
       nganhhoc,
     });
 
-    fetch('http://192.168.0.20:3000/addnew', {
+    fetch('http://localhost:3000/addnew', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
