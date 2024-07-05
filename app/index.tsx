@@ -86,6 +86,7 @@ const Login = () => {
             .catch((error) => {
                 console.error('Error:', error);
             });
+            console.log(username, password);
     };
 
     const handleSignUpPress = () => {

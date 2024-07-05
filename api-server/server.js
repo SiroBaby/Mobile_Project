@@ -66,18 +66,18 @@ db.serialize(() => {
   db.run(`CREATE TABLE IF NOT EXISTS PhienDiemDanh (
     MaPhien TEXT PRIMARY KEY,
     MSSV TEXT,
-    MaLop TEXT,
+    MaMonHoc TEXT,
     Dd1 BOOLEAN,
     Dd2 BOOLEAN,
     Dd3 BOOLEAN,
     Dd4 BOOLEAN,
     Dd5 BOOLEAN,
     FOREIGN KEY (MSSV) REFERENCES SinhVien(MSSV),
-    FOREIGN KEY (MaLop) REFERENCES LopHoc(MaLop)
+    FOREIGN KEY (MaMonHoc) REFERENCES MonHoc(MaMonHoc)
   )`);
 
   db.run(`CREATE TABLE IF NOT EXISTS User (
-    ID TEXT PRIMARY KEY AUTOINCREMENT,
+    ID INTEGER PRIMARY KEY AUTOINCREMENT,
     HoVaTen TEXT,
     TenDangNhap TEXT,
     MatKhau TEXT,
