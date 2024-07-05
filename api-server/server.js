@@ -10,10 +10,10 @@ app.use(express.json());
 
 // Kết nối đến cơ sở dữ liệu SQLite (lưu trữ trong file database.db)
 let db = new sqlite3.Database(path.resolve(__dirname, 'database.db'), (err) => {
-    if (err) {
-        console.error(err.message);
-    }
-    console.log('Connected to the SQLite database.');
+  if (err) {
+    console.error(err.message);
+  }
+  console.log('Connected to the SQLite database.');
 });
 
 // Bật hỗ trợ khóa ngoại
@@ -21,7 +21,7 @@ db.run('PRAGMA foreign_keys = ON;');
 
 // Tạo các bảng theo đặc tả hệ thống, chỉ tạo nếu chưa tồn tại
 db.serialize(() => {
-    db.run(`CREATE TABLE IF NOT EXISTS SinhVien (
+  db.run(`CREATE TABLE IF NOT EXISTS SinhVien (
     MSSV TEXT PRIMARY KEY,
     Ten TEXT,
     NgaySinh DATE,
@@ -37,7 +37,7 @@ db.serialize(() => {
     FOREIGN KEY (MaNganh) REFERENCES NganhHoc(MaNganh)
   )`);
 
-    db.run(`CREATE TABLE IF NOT EXISTS LopHoc (
+  db.run(`CREATE TABLE IF NOT EXISTS LopHoc (
     MaLop TEXT PRIMARY KEY,
     TenLop TEXT,
     SoLuongSV INTEGER,
@@ -45,37 +45,39 @@ db.serialize(() => {
     FOREIGN KEY (ID) REFERENCES User(ID)
   )`);
 
-    db.run(`CREATE TABLE IF NOT EXISTS MonHoc (
+  db.run(`CREATE TABLE IF NOT EXISTS MonHoc (
     MaMonHoc TEXT PRIMARY KEY,
     TenMonHoc TEXT,
     SoTinChi INTEGER
   )`);
 
-    db.run(`CREATE TABLE IF NOT EXISTS Diem (
+  db.run(`CREATE TABLE IF NOT EXISTS Diem (
     MSSV TEXT,
     MaMonHoc TEXT,
-    Diem1 REAL,
-    Diem2 REAL,
-    Diem3 REAL,
-    DiemGK REAL,
-    DiemCK REAL,
+    Diem1 REAL DEFAULT 0,
+    Diem2 REAL DEFAULT 0,
+    DiemGK REAL DEFAULT 0,
+    DiemCK REAL DEFAULT 0,
     PRIMARY KEY (MSSV, MaMonHoc),
     FOREIGN KEY (MSSV) REFERENCES SinhVien(MSSV),
     FOREIGN KEY (MaMonHoc) REFERENCES MonHoc(MaMonHoc)
   )`);
 
-    db.run(`CREATE TABLE IF NOT EXISTS PhienDiemDanh (
+  db.run(`CREATE TABLE IF NOT EXISTS PhienDiemDanh (
     MaPhien TEXT PRIMARY KEY,
     MSSV TEXT,
     MaLop TEXT,
-    ThoiGian TEXT,
-    DaDiemDanh BOOLEAN,
+    Dd1 BOOLEAN,
+    Dd2 BOOLEAN,
+    Dd3 BOOLEAN,
+    Dd4 BOOLEAN,
+    Dd5 BOOLEAN,
     FOREIGN KEY (MSSV) REFERENCES SinhVien(MSSV),
     FOREIGN KEY (MaLop) REFERENCES LopHoc(MaLop)
   )`);
 
-    db.run(`CREATE TABLE IF NOT EXISTS User (
-    ID TEXT PRIMARY KEY,
+  db.run(`CREATE TABLE IF NOT EXISTS User (
+    ID TEXT PRIMARY KEY AUTOINCREMENT,
     HoVaTen TEXT,
     TenDangNhap TEXT,
     MatKhau TEXT,
@@ -84,13 +86,13 @@ db.serialize(() => {
     Quyen INTEGER DEFAULT 0
   )`);
 
-    db.run(`CREATE TABLE IF NOT EXISTS NganhHoc (
+  db.run(`CREATE TABLE IF NOT EXISTS NganhHoc (
     MaNganh TEXT PRIMARY KEY,
     TenNganh TEXT,
     SoLuongSV INTEGER
   )`);
 
-    db.run(`CREATE TABLE IF NOT EXISTS NganhMonHoc (
+  db.run(`CREATE TABLE IF NOT EXISTS NganhMonHoc (
     MaNganh TEXT,
     MaMonHoc TEXT,
     PRIMARY KEY (MaNganh, MaMonHoc),
@@ -98,7 +100,7 @@ db.serialize(() => {
     FOREIGN KEY (MaMonHoc) REFERENCES MonHoc(MaMonHoc)
   )`);
 
-    db.run(`CREATE TABLE IF NOT EXISTS SinhVienLopHoc (
+  db.run(`CREATE TABLE IF NOT EXISTS SinhVienLopHoc (
     MSSV TEXT,
     MaLop TEXT,
     PRIMARY KEY (MSSV, MaLop),
@@ -106,7 +108,7 @@ db.serialize(() => {
     FOREIGN KEY (MaLop) REFERENCES LopHoc(MaLop)
   )`);
 
-    db.run(`CREATE TABLE IF NOT EXISTS LopMonHoc (
+  db.run(`CREATE TABLE IF NOT EXISTS LopMonHoc (
     MaLop TEXT,
     MaMonHoc TEXT,
     PRIMARY KEY (MaLop, MaMonHoc),
@@ -116,59 +118,65 @@ db.serialize(() => {
 });
 
 app.post('/login', (req, res) => {
-    const { username, password } = req.body;
-    db.get('SELECT * FROM User WHERE TenDangNhap = ? AND MatKhau = ?', [username, password], (err, row) => {
-        if (err) {
-            res.status(500).json({ error: err.message });
-            return;
-        }
-        if (row) {
-            res.status(200).json({ message: 'Login successful', user: row });
-        } else {
-            res.status(401).json({ message: 'Invalid credentials' });
-        }
-    });
+  const { username, password } = req.body;
+
+  // Chạy truy vấn SQL để lấy thông tin user, bao gồm MaLop và MaMonHoc
+  const query = `
+    SELECT User.*, LopMonHoc.MaLop, LopMonHoc.MaMonHoc FROM User JOIN LopHoc ON USER.ID = LopHoc.ID JOIN LopMonHoc ON LopHoc.MaLop = LopMonHoc.MaLop WHERE USER.TenDangNhap = ? AND USER.MatKhau = ?;
+  `;
+
+  db.get(query, [username, password], (err, row) => {
+    if (err) {
+      res.status(500).json({ error: err.message });
+      return;
+    }
+    if (row) {
+      res.status(200).json({ message: 'Login successful', user: row });
+    } else {
+      res.status(401).json({ message: 'Invalid credentials' });
+    }
+  });
 });
 
 app.post('/signup', (req, res) => {
-    const { fullName, username, email, phoneNumber, password } = req.body;
-    // Kiểm tra xem người dùng đã tồn tại trong cơ sở dữ liệu chưa
-    db.get('SELECT * FROM User WHERE TenDangNhap = ?', [username], (err, row) => {
+  const { fullName, username, email, phoneNumber, password } = req.body;
+  // Kiểm tra xem người dùng đã tồn tại trong cơ sở dữ liệu chưa
+  db.get('SELECT * FROM User WHERE TenDangNhap = ?', [username], (err, row) => {
+    if (err) {
+      res.status(500).json({ error: err.message });
+      return;
+    }
+    if (row) {
+      res.status(400).json({ message: 'Username already exists' });
+    } else {
+      // Thêm người dùng mới vào cơ sở dữ liệu
+      db.run('INSERT INTO User (HoVaTen, TenDangNhap, MatKhau, SDT, Email) VALUES (?, ?, ?, ?, ?)', [fullName, username, password, phoneNumber, email], (err) => {
         if (err) {
-            res.status(500).json({ error: err.message });
-            return;
+          res.status(500).json({ error: err.message });
+          return;
         }
-        if (row) {
-            res.status(400).json({ message: 'Username already exists' });
-        } else {
-            // Thêm người dùng mới vào cơ sở dữ liệu
-            db.run('INSERT INTO User (HoVaTen, TenDangNhap, MatKhau, SDT, Email) VALUES (?, ?, ?, ?, ?)', [fullName, username, password, phoneNumber, email], (err) => {
-                if (err) {
-                    res.status(500).json({ error: err.message });
-                    return;
-                }
-                res.status(201).json({ message: 'Signup successful' });
-            });
-        }
-    });
+        res.status(201).json({ message: 'Signup successful' });
+      });
+    }
+  });
 });
 
 //Api đổi mật khẩu
 
 //Api thêm mới sinh viên
 app.post('/addnew', (req, res) => {
-    const { mssv, name, ngaysinh, gioitinh, cccd, dantoc, quequan, email, sdt, nganhhoc, diachi } = req.body;
+  const { mssv, name, ngaysinh, gioitinh, cccd, dantoc, quequan, email, sdt, nganhhoc, diachi } = req.body;
 
-    const sql = `INSERT INTO SinhVien (MSSV, Ten, NgaySinh, GioiTinh, CCCD, DanToc, QueQuan, Email, SoDienThoai, MaNganh, Address)
+  const sql = `INSERT INTO SinhVien (MSSV, Ten, NgaySinh, GioiTinh, CCCD, DanToc, QueQuan, Email, SoDienThoai, MaNganh, Address)
                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
-    db.run(sql, [mssv, name, ngaysinh, gioitinh, cccd, dantoc, quequan, email, sdt, nganhhoc, diachi], function(err) {
-        if (err) {
-            res.status(500).json({ error: 'Thêm mới sinh viên thất bại' });
-            return;
-        }
-        res.status(200).json({ message: 'Thêm mới sinh viên thành công' });
-    });
+  db.run(sql, [mssv, name, ngaysinh, gioitinh, cccd, dantoc, quequan, email, sdt, nganhhoc, diachi], function (err) {
+    if (err) {
+      res.status(500).json({ error: 'Thêm mới sinh viên thất bại' });
+      return;
+    }
+    res.status(200).json({ message: 'Thêm mới sinh viên thành công' });
+  });
 });
 
 //Api lấy danh sách toàn bộ sinh viên
@@ -186,6 +194,33 @@ app.get('/getstudents', (req, res) => {
       LopHoc ON LopHoc.MaLop = SinhVienLopHoc.MaLop
   `;
   db.all(sql, [], (err, rows) => {
+    if (err) {
+      res.status(500).json({ error: err.message });
+      return;
+    }
+    res.status(200).json(rows);
+  });
+});
+
+// Api lấy danh sách sinh viên theo môn học
+app.get('/students/:subjectId', (req, res) => {
+  const subjectId = req.params.subjectId;
+  const sql = `
+      SELECT 
+          SinhVien.MSSV, 
+          SinhVien.Ten, 
+          Diem.Diem1, 
+          Diem.Diem2, 
+          Diem.DiemGK, 
+          Diem.DiemCK 
+      FROM 
+          SinhVien
+      JOIN 
+          Diem ON SinhVien.MSSV = Diem.MSSV
+      WHERE 
+          Diem.MaMonHoc = ?
+  `;
+  db.all(sql, [subjectId], (err, rows) => {
       if (err) {
           res.status(500).json({ error: err.message });
           return;
@@ -194,8 +229,34 @@ app.get('/getstudents', (req, res) => {
   });
 });
 
+// Api cập nhật điểm sinh viên
+app.post('/students/:subjectId/update-scores', (req, res) => {
+  const subjectId = req.params.subjectId;
+  const { mssv, score1, score2, scoreGK, scoreCK } = req.body;
+
+  const sql = `
+      UPDATE Diem 
+      SET 
+          Diem1 = ?, 
+          Diem2 = ?, 
+          DiemGK = ?, 
+          DiemCK = ? 
+      WHERE 
+          MSSV = ? 
+          AND MaMonHoc = ?
+  `;
+  db.run(sql, [score1, score2, scoreGK, scoreCK, mssv, subjectId], function (err) {
+    if (err) {
+      res.status(500).json({ error: err.message });
+      return;
+    }
+    res.status(200).json({ message: 'Cập nhật điểm thành công' });
+    console.log(score1, score2, scoreGK, scoreCK, mssv, subjectId);
+  });
+});
+
 
 // Khởi động server
 app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
+  console.log(`Server is running on port ${port}`);
 });

@@ -13,6 +13,8 @@ interface UserData {
     SDT: number;
     Email: String;
     Quyen: number;
+    MaLop: String;
+    MaMonHoc: String;
     [key: string]: any; // Add this line to allow additional properties
 }
 
