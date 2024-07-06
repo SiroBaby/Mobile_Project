@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
 import tw from 'twrnc';
-import { Link, router } from 'expo-router';
+import { useRouter } from 'expo-router';
 
 const ChangePasswordScreen = () => {
   const [username, setUsername] = useState('');
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
+  const router = useRouter();
 
   const handleChangePassword = () => {
     if (newPassword !== confirmNewPassword) {
@@ -15,7 +16,7 @@ const ChangePasswordScreen = () => {
       return;
     }
 
-    fetch('http://192.168.1.7:3000/changepassword', {
+    fetch('http://192.168.1.196:3000/changepassword', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -28,7 +29,13 @@ const ChangePasswordScreen = () => {
     })
       .then((response) => {
         if (!response.ok) {
-          Alert.alert('Đổi mật khẩu thất bại!');
+          if (response.status === 404) {
+            Alert.alert('Người dùng không tồn tại!');
+          } else if (response.status === 400) {
+            Alert.alert('Mật khẩu cũ không chính xác!');
+          } else {
+            Alert.alert('Đổi mật khẩu thất bại!');
+          }
           throw new Error('Change password failed');
         }
         Alert.alert('Đổi mật khẩu thành công!');
@@ -84,4 +91,5 @@ const ChangePasswordScreen = () => {
     </View>
   );
 };
+
 export default ChangePasswordScreen;

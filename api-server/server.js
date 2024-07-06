@@ -161,7 +161,31 @@ app.post('/signup', (req, res) => {
   });
 });
 
-//Api đổi mật khẩu
+// API đổi mật khẩu
+app.post('/changepassword', (req, res) => {
+  const { username, oldPassword, newPassword } = req.body;
+
+  const selectQuery = 'SELECT * FROM User WHERE TenDangNhap = ? AND MatKhau = ?';
+  const updateQuery = 'UPDATE User SET MatKhau = ? WHERE TenDangNhap = ?';
+
+  db.get(selectQuery, [username, oldPassword], (err, row) => {
+    if (err) {
+      res.status(500).json({ error: err.message });
+      return;
+    }
+    if (!row) {
+      res.status(400).json({ message: 'Sai mật khẩu cũ' });
+      return;
+    }
+    db.run(updateQuery, [newPassword, username], function(err) {
+      if (err) {
+        res.status(500).json({ error: err.message });
+        return;
+      }
+      res.status(200).json({ message: 'Đổi mật khẩu thành công' });
+    });
+  });
+});
 
 //Api thêm mới sinh viên
 app.post('/addnew', (req, res) => {
@@ -260,7 +284,7 @@ app.get('/attendance/:subjectId', (req, res) => {
   const subjectId = req.params.subjectId;
   const sql = `
     SELECT 
-      PhienDiemDanh.MSSV, 
+      PhienDiemDanh.MSSV,  
       SinhVien.Ten, 
       PhienDiemDanh.Dd1, 
       PhienDiemDanh.Dd2, 
