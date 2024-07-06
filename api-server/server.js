@@ -255,6 +255,60 @@ app.post('/students/:subjectId/update-scores', (req, res) => {
   });
 });
 
+// API lấy danh sách điểm danh
+app.get('/attendance/:subjectId', (req, res) => {
+  const subjectId = req.params.subjectId;
+  const sql = `
+    SELECT 
+      PhienDiemDanh.MSSV, 
+      SinhVien.Ten, 
+      PhienDiemDanh.Dd1, 
+      PhienDiemDanh.Dd2, 
+      PhienDiemDanh.Dd3, 
+      PhienDiemDanh.Dd4, 
+      PhienDiemDanh.Dd5 
+    FROM 
+      PhienDiemDanh
+    JOIN 
+      SinhVien ON PhienDiemDanh.MSSV = SinhVien.MSSV
+    WHERE 
+      PhienDiemDanh.MaMonHoc = ?
+  `;
+  db.all(sql, [subjectId], (err, rows) => {
+    if (err) {
+      res.status(500).json({ error: err.message });
+      return;
+    }
+    res.status(200).json(rows);
+  });
+});
+
+// API cập nhật trạng thái điểm danh
+app.post('/attendance/:subjectId/update', (req, res) => {
+  const subjectId = req.params.subjectId;
+  const { mssv, dd1, dd2, dd3, dd4, dd5 } = req.body;
+
+  const sql = `
+    UPDATE PhienDiemDanh 
+    SET 
+      Dd1 = ?, 
+      Dd2 = ?, 
+      Dd3 = ?, 
+      Dd4 = ?, 
+      Dd5 = ?
+    WHERE 
+      MSSV = ? 
+      AND MaMonHoc = ?
+  `;
+  db.run(sql, [dd1, dd2, dd3, dd4, dd5, mssv, subjectId], function (err) {
+    if (err) {
+      res.status(500).json({ error: err.message });
+      return;
+    }
+    res.status(200).json({ message: 'Cập nhật điểm danh thành công' });
+  });
+});
+
 
 // Khởi động server
 app.listen(port, () => {

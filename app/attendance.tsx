@@ -1,30 +1,108 @@
-import React, { useState } from 'react';
-import { ScrollView, StyleSheet, Switch, Text, View } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { ScrollView, StyleSheet, Switch, Text, View, ActivityIndicator } from 'react-native';
 import tw from 'twrnc';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const initialSubject: { stt: number; mssv: string; name: string; attendance: boolean[]; }[] = [
-  { stt: 1, mssv: "001", name: "Nguyen Van A", attendance: [true, false, true, true, false] },
-  { stt: 2, mssv: "002", name: "Tran Thi B", attendance: [true, true, true, false, true] },
-  { stt: 3, mssv: "003", name: "Le Van C", attendance: [false, true, false, true, true] },
-  { stt: 4, mssv: "004", name: "Pham Thi D", attendance: [true, true, false, false, true] },
-  { stt: 5, mssv: "005", name: "Hoang Van Ed wjkefb ưklefn dhwe fwhje fkwef kwjef kjfqw", attendance: [false, false, true, true, true] },
-  { stt: 6, mssv: "006", name: "Nguyen Van F", attendance: [true, true, false, true, false] },
-  { stt: 7, mssv: "007", name: "Tran Thi G", attendance: [false, true, true, true, true] },
-  { stt: 8, mssv: "008", name: "Le Van H", attendance: [true, false, true, false, true] },
-  { stt: 9, mssv: "009", name: "Pham Thi I", attendance: [true, true, true, true, false] },
-  { stt: 10, mssv: "010", name: "Hoang Van J", attendance: [false, false, false, true, true] },
-  { stt: 11, mssv: "011", name: "Hoang Van J", attendance: [false, false, false, true, true] },
-  { stt: 12, mssv: "012", name: "Hoang Van J", attendance: [false, false, false, true, true] },
-];
+interface UserData {
+  id: string;
+  HoVaTen: string;
+  TenDangNhap: string;
+  MatKhau: string;
+  SDT: number;
+  Email: string;
+  Quyen: number;
+  MaLop: string;
+  MaMonHoc: string;
+  [key: string]: any;
+}
+
+interface AttendanceData {
+  stt: number;
+  mssv: string;
+  name: string;
+  attendance: boolean[];
+}
 
 const Attendance = () => {
-  const [classData, setClassData] = useState(initialSubject);
+  const [classData, setClassData] = useState<AttendanceData[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const handleAttendanceChange = (studentIndex: number, attendanceIndex: number, value: boolean) => {
-    const updatedClassData = [...classData];
-    updatedClassData[studentIndex].attendance[attendanceIndex] = value;
-    setClassData(updatedClassData);
+  useEffect(() => {
+    fetchAttendanceData();
+  }, []);
+
+  const fetchAttendanceData = async () => {
+    try {
+      const userData = await getUserData();
+      const subjectId = userData?.MaMonHoc;
+      const response = await fetch(`http://localhost:3000/attendance/${subjectId}`);
+      const data = await response.json();
+
+      // Ensure attendance is correctly mapped to an array
+      const processedData = data.map((student: any, index: number) => ({
+        stt: index + 1,
+        mssv: student.MSSV,
+        name: student.Ten,
+        attendance: [student.Dd1 === 1, student.Dd2 === 1, student.Dd3 === 1, student.Dd4 === 1, student.Dd5 === 1],
+      }));
+
+      setClassData(processedData);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching attendance data:', error);
+      setLoading(false);
+    }
   };
+
+  const getUserData = async (): Promise<UserData | null> => {
+    try {
+      const jsonValue = await AsyncStorage.getItem('userData');
+      return jsonValue != null ? JSON.parse(jsonValue) : null;
+    } catch (e) {
+      console.error('Failed to load user data', e);
+      return null;
+    }
+  };
+
+  const handleAttendanceChange = async (studentIndex: number, attendanceIndex: number, value: boolean) => {
+    const updatedClassData = [...classData];
+    if (updatedClassData[studentIndex]?.attendance) {
+      updatedClassData[studentIndex].attendance[attendanceIndex] = value;
+
+      // Tạo object để cập nhật điểm danh
+      const attendanceUpdate = {
+        mssv: updatedClassData[studentIndex].mssv,
+        dd1: updatedClassData[studentIndex].attendance[0],
+        dd2: updatedClassData[studentIndex].attendance[1],
+        dd3: updatedClassData[studentIndex].attendance[2],
+        dd4: updatedClassData[studentIndex].attendance[3],
+        dd5: updatedClassData[studentIndex].attendance[4],
+      };
+
+      try {
+        const userData = await getUserData();
+        const subjectId = userData?.MaMonHoc;
+        await fetch(`http://localhost:3000/attendance/${subjectId}/update`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(attendanceUpdate),
+        });
+        setClassData(updatedClassData);
+      } catch (error) {
+        console.error('Error updating attendance:', error);
+      }
+    }
+  };
+
+  if (loading) {
+    return (
+      <View style={[tw`p-4 h-full bg-white`, styles.center]}>
+        <ActivityIndicator size="large" color="#6464db" />
+      </View>
+    );
+  }
 
   return (
     <View style={tw`p-4 h-full bg-white`}>
@@ -84,7 +162,7 @@ const Attendance = () => {
       </ScrollView>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   headerRow: {
@@ -128,6 +206,10 @@ const styles = StyleSheet.create({
   },
   attendanceCell: {
     minWidth: 60,
+  },
+  center: {
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
