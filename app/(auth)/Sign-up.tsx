@@ -56,7 +56,7 @@ const SignupScreen = () => {
         source={require('@/assets/images/signin.jpg')}
         style={tw`w-80 h-56`}
       />
-      <Text style={tw`text-2xl font-bold mb-3 text-blue-900`}>ĐĂNG KÍ</Text>
+      <Text style={tw`text-2xl font-bold mb-3 text-blue-900`}>ĐĂNG KÝ</Text>
 
       <TextInput
         style={tw`h-10 border border-gray-300 px-3 mb-4 w-72 rounded-xl`}
@@ -103,7 +103,7 @@ const SignupScreen = () => {
       />
 
       <TouchableOpacity style={tw`h-10 bg-blue-900 py-2 px-3 rounded-xl items-center mb-4 w-72`} onPress={handleSignup}>
-        <Text style={tw`text-white font-bold pt-0.5`}>ĐĂNG KÍ</Text>
+        <Text style={tw`text-white font-bold pt-0.5`}>ĐĂNG KÝ</Text>
       </TouchableOpacity>
 
       <Text style={tw`text-center mb-4 text-blue-900`}> --- Quản trị viên đã có tài khoản --- </Text>

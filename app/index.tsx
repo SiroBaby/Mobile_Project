@@ -59,7 +59,7 @@ const Login = () => {
     };
 
     const handleLogin = () => {
-        fetch('http://192.168.1.196:3000/login', {
+        fetch('http://192.168.0.110:3000/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -130,7 +130,7 @@ const Login = () => {
             <Text style={tw`text-center mb-5`}>Quản trị viên chưa có tài khoản</Text>
 
             <TouchableOpacity style={tw`bg-[#EEF4FF] p-3 items-center rounded-xl mb-5 w-78`} onPress={handleSignUpPress}>
-                <Text style={tw`text-[#2E328C] font-bold`}>ĐĂNG KÍ</Text>
+                <Text style={tw`text-[#2E328C] font-bold`}>ĐĂNG KÝ</Text>
             </TouchableOpacity>
         </View>
     );
