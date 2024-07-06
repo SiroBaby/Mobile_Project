@@ -15,11 +15,6 @@ const Home = () => {
   const Inputscore = () => {
     navigation.navigate('inputscore');
   };
-
-  const Subrp = () => {
-    navigation.navigate('subrp');
-  };
-
   return (
     <ScrollView contentContainerStyle={styles.container}>
     <View style={tw`flex-1 bg-white mt-8`}>
@@ -55,17 +50,6 @@ const Home = () => {
             />
           </View>
           <Text style={tw`text-lg text-blue-900 mt-2 font-semibold`}>Nhập điểm</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={tw`flex flex-row justify-around mt-3`}>
-        <TouchableOpacity style={tw`items-center`} onPress={Subrp}>
-          <View style={tw`bg-blue-900/5 w-80 h-50 rounded-3xl items-center justify-center`}>
-            <Image
-              source={require('@/assets/images/icon/8725582_chart_line_icon.png')}
-              style={tw`w-25 h-25 `}
-            />
-          </View>
-          <Text style={tw`text-lg text-blue-900 mt-2 font-semibold`}>Nộp báo cáo</Text>
         </TouchableOpacity>
       </View>
       <Image
