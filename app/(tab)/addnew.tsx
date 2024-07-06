@@ -65,12 +65,12 @@ const AddStudentScreen = () => {
   };
 
   return (
-    <ScrollView contentContainerStyle={tw`flex items-center bg-white p-4`} keyboardShouldPersistTaps="handled">
+    <ScrollView contentContainerStyle={tw`flex items-center p-4`} keyboardShouldPersistTaps="handled">
       <View style={tw`flex items-center justify-center mb-4`}>
         {image ? (
           <Image source={{ uri: image }} style={tw`w-40 h-40 mb-2 rounded-full`} />
         ) : (
-          <Image source={require('@/assets/images/hi.png')} style={tw`w-40 h-40 mb-2 rounded-full`} />
+          <Image source={require('@/assets/images/ava.png')} style={tw`w-40 h-40 mb-2 rounded-full`} />
         )}
       </View>
       <Text style={tw`text-lg font-bold mb-2`}>NHẬP THÔNG TIN</Text>

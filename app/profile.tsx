@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, Pressable, Button, TextInput } from 'react-native';
+import { View, Text, Image, Pressable,TextInput, TouchableOpacity } from 'react-native';
 import tw from 'twrnc';
 import axios from 'axios';
 import { useRoute, useNavigation } from '@react-navigation/native';
@@ -98,7 +98,7 @@ const StudentInfo: React.FC<StudentInfoProps> = () => {
             <View style={tw`flex justify-center pt-2 px-4`}>
                 <View style={tw`flex items-center justify-center mb-4`}>
                     <Image
-                        source={require('@/assets/images/hi.png')}
+                        source={require('@/assets/images/ava.png')}
                         style={tw`w-40 h-40 mb-4 rounded-full`} />
                 </View>
             </View>
@@ -157,10 +157,15 @@ const StudentInfo: React.FC<StudentInfoProps> = () => {
                     - Cơ sở: <Text style={tw`font-semibold`}>{studentInfo.school}</Text>
                 </Text>
             </View>
-            <Button title='Chỉnh sửa' onPress={() => setModalOpen(true)} />
-            <Pressable onPress={handleDelete}>
-                <Text style={tw`text-lg font-bold bg-red-700 p-1 rounded text-white w-full mt-4 text-center`}>XÓA</Text>
+            <View style={tw`items-center p-5`}>
+            <TouchableOpacity style={tw`bg-blue-700 p-3 items-center rounded-xl mb-3 w-60`} onPress={() => setModalOpen(true)}>
+                <Text style={tw`text-white font-bold`}>CHỈNH SỬA</Text>
+            </TouchableOpacity>
+            <Pressable style={tw`bg-red-700 p-3 items-center rounded-xl mb-3 w-60 m-4`} onPress={handleDelete}>
+                <Text style={tw`text-white font-bold`}>XÓA</Text>
             </Pressable>
+            </View>
+
             <Modal isOpen={modalOpen}>
                 <View style={tw`w-90 p-4 rounded-xl justify-center `}>
                     <View style={tw`flex justify-center pt-2 px-4`}>

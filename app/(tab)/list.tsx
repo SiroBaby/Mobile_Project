@@ -24,13 +24,13 @@ const StudentItem: React.FC<StudentItemProps> = ({ name, studentId, onPress }) =
   <TouchableOpacity onPress={onPress} style={tw`bg-white p-4 shadow flex-row items-center rounded-md`}>
     <View style={tw`mr-4`}>
       <Image
-        source={require('../../assets/images/login.png')}
+        source={require('../../assets/images/ava.png')}
         style={tw`w-18 h-18 rounded-full`}
       />
     </View>
     <View>
       <Text style={tw`text-xl font-bold`}>{name}</Text>
-      <Text style={tw`text-lg text-gray-800`}>Student ID: {studentId}</Text>
+      <Text style={tw`text-lg text-gray-800`}>MSSV: {studentId}</Text>
     </View>
   </TouchableOpacity>
 );
