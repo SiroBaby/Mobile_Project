@@ -10,19 +10,17 @@ import { RootStackParamList } from '../types'; // Adjust the import path as need
 interface Student {
   id: string;
   name: string;
-  classname: string;
   studentId: string;
 }
 
 // Define the props for the StudentItem component
 interface StudentItemProps {
   name: string;
-  classname: string;
   studentId: string;
   onPress: () => void;
 }
 
-const StudentItem: React.FC<StudentItemProps> = ({ name, classname, studentId, onPress }) => (
+const StudentItem: React.FC<StudentItemProps> = ({ name, studentId, onPress }) => (
   <TouchableOpacity onPress={onPress} style={tw`bg-white p-4 shadow flex-row items-center rounded-md`}>
     <View style={tw`mr-4`}>
       <Image
@@ -32,7 +30,6 @@ const StudentItem: React.FC<StudentItemProps> = ({ name, classname, studentId, o
     </View>
     <View>
       <Text style={tw`text-xl font-bold`}>{name}</Text>
-      <Text style={tw`text-lg text-gray-800`}>Class: {classname}</Text>
       <Text style={tw`text-lg text-gray-800`}>Student ID: {studentId}</Text>
     </View>
   </TouchableOpacity>
@@ -49,7 +46,6 @@ const List: React.FC = () => {
         const data: Student[] = response.data.map((item: any) => ({
           id: item.MSSV,
           name: item.Ten,
-          classname: item.MaLop,
           studentId: item.MSSV
         }));
         setStudents(data);
@@ -61,7 +57,6 @@ const List: React.FC = () => {
 
   const filteredStudents = students.filter(student =>
     student.name.toLowerCase().includes(search.toLowerCase()) ||
-    student.classname.toLowerCase().includes(search.toLowerCase()) ||
     student.studentId.toLowerCase().includes(search.toLowerCase())
   );
 
@@ -88,7 +83,6 @@ const List: React.FC = () => {
         renderItem={({ item }) => (
           <StudentItem
             name={item.name}
-            classname={item.classname}
             studentId={item.studentId}
             onPress={() => navigation.navigate('profile', { studentId: item.id })}
           />
