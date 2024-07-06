@@ -207,15 +207,10 @@ app.post('/addnew', (req, res) => {
 app.get('/getstudents', (req, res) => {
   const sql = `
     SELECT 
-      SinhVien.MSSV, 
-      SinhVien.Ten, 
-      LopHoc.MaLop 
+      MSSV, 
+      Ten
     FROM 
       SinhVien 
-    JOIN 
-      SinhVienLopHoc ON SinhVien.MSSV = SinhVienLopHoc.MSSV 
-    JOIN 
-      LopHoc ON LopHoc.MaLop = SinhVienLopHoc.MaLop
   `;
   db.all(sql, [], (err, rows) => {
     if (err) {
