@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Text, View, FlatList, Image, TextInput, TouchableOpacity } from 'react-native';
 import axios from 'axios';
 import tw from 'twrnc';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../types'; // Adjust the import path as needed
 
 // Define the Student type
 interface Student {
@@ -16,10 +19,11 @@ interface StudentItemProps {
   name: string;
   classname: string;
   studentId: string;
+  onPress: () => void;
 }
 
-const StudentItem: React.FC<StudentItemProps> = ({ name, classname, studentId }) => (
-  <View style={tw`bg-white p-4 shadow flex-row items-center rounded-md`}>
+const StudentItem: React.FC<StudentItemProps> = ({ name, classname, studentId, onPress }) => (
+  <TouchableOpacity onPress={onPress} style={tw`bg-white p-4 shadow flex-row items-center rounded-md`}>
     <View style={tw`mr-4`}>
       <Image
         source={require('../../assets/images/login.png')}
@@ -31,18 +35,18 @@ const StudentItem: React.FC<StudentItemProps> = ({ name, classname, studentId })
       <Text style={tw`text-lg text-gray-800`}>Class: {classname}</Text>
       <Text style={tw`text-lg text-gray-800`}>Student ID: {studentId}</Text>
     </View>
-  </View>
+  </TouchableOpacity>
 );
 
 const List: React.FC = () => {
   const [students, setStudents] = useState<Student[]>([]);
   const [search, setSearch] = useState<string>('');
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList, 'List'>>();
 
   useEffect(() => {
     axios.get('http://localhost:3000/getstudents')
       .then(response => {
-        // Mapping response data to Student type
-        const data = response.data.map((item: any) => ({
+        const data: Student[] = response.data.map((item: any) => ({
           id: item.MSSV,
           name: item.Ten,
           classname: item.MaLop,
@@ -82,7 +86,12 @@ const List: React.FC = () => {
         data={filteredStudents}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <StudentItem name={item.name} classname={item.classname} studentId={item.studentId} />
+          <StudentItem
+            name={item.name}
+            classname={item.classname}
+            studentId={item.studentId}
+            onPress={() => navigation.navigate('profile', { studentId: item.id })}
+          />
         )}
         ItemSeparatorComponent={() => <View style={tw`h-2`} />}
       />

@@ -22,4 +22,6 @@ export type RootStackParamList = {
     attendance: undefined;
     inputscore: undefined;
     subrp: undefined;
+    List: undefined;
+    profile: { studentId: string };
   };

@@ -31,8 +31,8 @@ function StudentInfo() {
     };
 
     const handleSubmit = () => {
-        
-        
+
+
     };
 
     return (
@@ -103,6 +103,9 @@ function StudentInfo() {
                 </Text>
             </View>
             <Button title='Chỉnh sửa' onPress={() => setModalOpen(true)} />
+            <Pressable>
+                <Text style={tw`text-lg font-bold bg-red-700 p-1 rounded text-white w-full mt-4 text-center`}>XÓA</Text>
+            </Pressable>
             <Modal isOpen={modalOpen}>
                 <View style={tw`w-90 p-4 rounded-xl justify-center `}>
                     <View style={tw`flex justify-center pt-2 px-4`}>
