@@ -226,6 +226,89 @@ app.get('/getstudents', (req, res) => {
   });
 });
 
+// API lấy thông tin sinh viên theo MSSV
+app.get('/getstudent/:studentId', (req, res) => {
+  const { studentId } = req.params;
+  const sql = `SELECT * FROM SinhVien WHERE MSSV = ?`;
+
+  db.get(sql, [studentId], (err, row) => {
+    if (err) {
+      res.status(500).json({ error: err.message });
+      return;
+    }
+    res.status(200).json(row);
+  });
+});
+
+// API cập nhật thông tin sinh viên
+app.put('/updatestudent/:studentId', (req, res) => {
+  const { studentId } = req.params;
+  const { name, cccd, dob, gender, ethnicity, address, hometown, email, phone, major } = req.body;
+
+  const sql = `
+    UPDATE SinhVien
+    SET Ten = ?, CCCD = ?, NgaySinh = ?, GioiTinh = ?, DanToc = ?, Address = ?, QueQuan = ?, Email = ?, SoDienThoai = ?, MaNganh = ?
+    WHERE MSSV = ?
+  `;
+
+  db.run(sql, [name, cccd, dob, gender, ethnicity, address, hometown, email, phone, major, studentId], function(err) {
+    if (err) {
+      res.status(500).json({ error: err.message });
+      return;
+    }
+    res.status(200).json({ message: 'Cập nhật thông tin sinh viên thành công' });
+  });
+});
+
+// API xóa sinh viên theo MSSV
+app.delete('/deletestudent/:studentId', (req, res) => {
+  const { studentId } = req.params;
+
+  // Xóa các bản ghi phụ thuộc trước
+  const deleteDependentRecords = (table, column) => {
+    return new Promise((resolve, reject) => {
+      const sql = `DELETE FROM ${table} WHERE ${column} = ?`;
+      db.run(sql, [studentId], function (err) {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(this.changes);
+        }
+      });
+    });
+  };
+
+  // Xóa sinh viên
+  const deleteStudent = () => {
+    return new Promise((resolve, reject) => {
+      const sql = `DELETE FROM SinhVien WHERE MSSV = ?`;
+      db.run(sql, [studentId], function (err) {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(this.changes);
+        }
+      });
+    });
+  };
+
+  // Thực hiện xóa các bản ghi phụ thuộc và sau đó xóa sinh viên
+  const deleteOperations = async () => {
+    try {
+      await deleteDependentRecords('Diem', 'MSSV');
+      await deleteDependentRecords('PhienDiemDanh', 'MSSV');
+      await deleteDependentRecords('SinhVienLopHoc', 'MSSV');
+      await deleteStudent();
+      res.status(200).json({ message: 'Xóa sinh viên thành công' });
+    } catch (err) {
+      console.error('Error deleting student:', err); // Thêm chi tiết lỗi vào log
+      res.status(500).send(err);
+    }
+  };
+
+  deleteOperations();
+});
+
 // Api lấy danh sách sinh viên theo môn học
 app.get('/students/:subjectId', (req, res) => {
   const subjectId = req.params.subjectId;

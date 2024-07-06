@@ -1,10 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Image, Pressable, Button, TextInput } from 'react-native';
+import { View, Text, Image, Pressable, Button, TextInput } from 'react-native';
 import tw from 'twrnc';
-import Modal from './modal';
-import * as types from './types';
+import axios from 'axios';
+import { useRoute, useNavigation } from '@react-navigation/native';
+import Modal from './modal'; // Import modal component
+import { RootStackParamList } from './types'; // Adjust the import path as needed
+import { StackNavigationProp } from '@react-navigation/stack';
 
-function StudentInfo() {
+interface StudentInfoProps {
+    studentId: string;
+}
+
+const StudentInfo: React.FC<StudentInfoProps> = () => {
     const [modalOpen, setModalOpen] = useState(false);
     const [studentInfo, setStudentInfo] = useState({
         name: '',
@@ -17,13 +24,45 @@ function StudentInfo() {
         hometown: '',
         email: '',
         phone: '',
-        class: '',
         major: '',
         school: 'Học viện Hàng Không Việt Nam' // default value
     });
 
+    const route = useRoute();
+    const navigation = useNavigation<StackNavigationProp<RootStackParamList, 'profile'>>();
 
-    const handleInputChange = (field: keyof types.StudentInfoType, value: string) => {
+    useEffect(() => {
+        const { studentId } = route.params as { studentId: string };
+        axios.get(`http://localhost:3000/getstudent/${studentId}`)
+            .then(response => {
+                console.log(response.data); // Thêm dòng này để kiểm tra dữ liệu trả về
+                // Map the API response keys to state keys
+                const mappedData = {
+                    name: response.data.Ten,
+                    studentId: response.data.MSSV,
+                    cccd: response.data.CCCD,
+                    dob: response.data.NgaySinh,
+                    gender: response.data.GioiTinh,
+                    ethnicity: response.data.DanToc,
+                    address: response.data.Address,
+                    hometown: response.data.QueQuan,
+                    email: response.data.Email,
+                    phone: response.data.SoDienThoai,
+                    major: response.data.MaNganh,
+                    school: 'Học viện Hàng Không Việt Nam' // default value
+                };
+                setStudentInfo(mappedData);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    }, [route.params]);
+
+    useEffect(() => {
+        console.log(studentInfo);
+    }, [studentInfo]);
+
+    const handleInputChange = (field: keyof typeof studentInfo, value: string) => {
         setStudentInfo(prevState => ({
             ...prevState,
             [field]: value
@@ -31,8 +70,27 @@ function StudentInfo() {
     };
 
     const handleSubmit = () => {
+        axios.put(`http://localhost:3000/updatestudent/${studentInfo.studentId}`, studentInfo)
+            .then(response => {
+                setModalOpen(false);
+                alert('Student information updated successfully!');
+            })
+            .catch(error => {
+                console.error(error);
+                alert('Failed to update student information.');
+            });
+    };
 
-
+    const handleDelete = () => {
+        axios.delete(`http://localhost:3000/deletestudent/${studentInfo.studentId}`)
+            .then(response => {
+                alert('Student deleted successfully!');
+                navigation.navigate('list');
+            })
+            .catch(error => {
+                console.error(error);
+                alert('Failed to delete student.');
+            });
     };
 
     return (
@@ -93,9 +151,6 @@ function StudentInfo() {
             </View>
             <View style={tw`bg-blue-900/5 p-4 rounded-lg mb-4 border-dotted border-2 border-indigo-900`}>
                 <Text>
-                    - Lớp học: <Text style={tw`font-semibold`}>{studentInfo.class}</Text>
-                </Text>
-                <Text>
                     - Ngành học: <Text style={tw`font-semibold`}>{studentInfo.major}</Text>
                 </Text>
                 <Text>
@@ -103,7 +158,7 @@ function StudentInfo() {
                 </Text>
             </View>
             <Button title='Chỉnh sửa' onPress={() => setModalOpen(true)} />
-            <Pressable>
+            <Pressable onPress={handleDelete}>
                 <Text style={tw`text-lg font-bold bg-red-700 p-1 rounded text-white w-full mt-4 text-center`}>XÓA</Text>
             </Pressable>
             <Modal isOpen={modalOpen}>
@@ -174,11 +229,6 @@ function StudentInfo() {
                                 onChangeText={(value) => handleInputChange('phone', value)} />
                         </View>
 
-                        <TextInput
-                            style={tw`h-8 border border-gray-300 px-3 mb-2 rounded-xl`}
-                            placeholder="Lớp học"
-                            value={studentInfo.class}
-                            onChangeText={(value) => handleInputChange('class', value)} />
                         <TextInput
                             style={tw`h-8 border border-gray-300 px-3 mb-2 rounded-xl`}
                             placeholder="Ngành học"
