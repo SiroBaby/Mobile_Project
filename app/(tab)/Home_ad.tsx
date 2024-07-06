@@ -1,6 +1,6 @@
 // src/screens/Home.tsx
 import React from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView } from 'react-native';
 import tw from 'twrnc';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
 import { RootStackParamList } from '../types';
@@ -18,6 +18,7 @@ const Home = () => {
 
 
   return (
+    <ScrollView contentContainerStyle={styles.container}>
     <View style={tw`flex-1 bg-white p-3`}>
       <View style={tw`bg-white py-1 flex-row items-center`}>
         <Image
@@ -62,9 +63,18 @@ const Home = () => {
         style={tw`absolute w-36 h-36 right-0 bottom-0 opacity-10`}
       />
     </View>
+    </ScrollView>
   );
 }
 
 export default Home;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flexGrow: 1,
+    alignItems: 'center',
+    backgroundColor: '#ffffff',
+    paddingVertical: 16,
+  },
+});
+
